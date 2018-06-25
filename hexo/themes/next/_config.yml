@@ -522,9 +522,9 @@ valine:
 # Gitalk
 gitalk: 
   enable: true
-  clientID: '19afa2c12d8f685a1141'
-  clientSecret: 'ebbece283c1f2cc7379dd4fcc347f05f02c1f1c5'
-  repo: littleNA blog
+  clientID: 19afa2c12d8f685a1141
+  clientSecret: ebbece283c1f2cc7379dd4fcc347f05f02c1f1c5
+  repo: littleNA.github.io
   owner: littleNA
   admin: littleNA
   distractionFreeMode: true
