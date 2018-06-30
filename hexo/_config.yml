@@ -81,3 +81,11 @@ deploy:
   type: git
   repository: git@github.com:littleNA/littleNA.github.io.git
   branch: master
+  - type: leancloud_counter_security_sync
+
+leancloud_counter_security:
+  enable_sync: true
+  app_id: f6EeaEQTjb6LttG2GT1uEalX-gzGzoHsz
+  app_key: SwIgtaEYuUHLoJAUHMMs0aA4
+  username: admin
+  password: AdmiN+2018
