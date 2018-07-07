@@ -8,7 +8,7 @@ tags:
 categories: lua加解密
 ---
 # 前言
-&emsp;&emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎大牛前来交流。
+&emsp;&emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。
 
 &emsp;&emsp;主要用到的工具和环境：
 
@@ -24,16 +24,16 @@ categories: lua加解密
 <!-- more -->
 
 # lua 现状分析
-&emsp;&emsp;去年的那篇文章这一章没有写的，今年补上了一篇lua加解密的相关工作，请看:
+&emsp;&emsp;去年的那篇文章这一章没有写的，今年补上了一篇lua加解密的相关工作，请看：[《浅析android手游lua脚本的加密与解密（前传）》](https://litna.top/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/)
 
 # lua 各文件关系
 &emsp;&emsp;在学习lua手游解密过程中，遇到的lua文件不外乎就3种。其中.lua后缀的文件是明文代码，直接用记事本就能打开，.luac是lua脚本编译后的字节码文件，文件头为0x1B 0x4C 0x75 0x61，lua虚拟机能够直接解析lua和luac脚本文件，而.luaJIT是另一个lua的实现版本（不是lua的原作者写的），JIT是指Just-In-Time（即时解析运行），luaJIT相比lua和luac更加高效，文件头是0x1B 0x4C 0x4A：
 
-&emsp;&emsp;luac:
+&emsp;&emsp;luac 文件头如下：
 
 {% asset_img luac.png %}
 
-&emsp;&emsp;luaJIT:
+&emsp;&emsp;luaJIT 文件头如下：
 
 {% asset_img luajit.png %}
 
@@ -52,7 +52,7 @@ categories: lua加解密
 
 &emsp;&emsp;这种情况主要是修改lua虚拟机源码，再通过修改过的虚拟机将lua脚本编译成luac字节码，达到保护的目的。这种情况如果直接用上面的反编译工具是不能将luac反编译的，需要在虚拟机的引擎中分析出相对应的opcode，然后修复反编译工具luadec 源码中的 opcode 并重新编译，编译后的文件就能进行反编译了，后面会具体分析。
 
-&emsp;&emsp;在破解手游源码中，上面的三种情况可能会交叉遇到。
+&emsp;&emsp;在破解手游过程中，上面的三种情况可能会交叉遇到。
 
 # 获取lua源码的一般方法
 &emsp;&emsp;这里主要介绍4种方法，都会在后面用实例说明。
@@ -338,7 +338,7 @@ bool decryptLua_Mhxy(string strFilePath, string strSaveDir)
 
 {% asset_img 5.3_5.png %}
 
-decrypt()实现代码如下：
+&emsp;&emsp;decrypt()实现代码如下：
 
 ```c++
 bool decrypt(unsigned char *pData, int nLen)
@@ -403,6 +403,6 @@ struct Lrc4
 
 # 参考文章
 * 腾讯游戏安全中心《Lua游戏逆向及破解方法介绍》 http://gslab.qq.com/portal.php?mod=view&aid=173
-* 云风《Lua源码欣赏》http://download.csdn.net/download/nomoonon/8551481
+* 云风《Lua源码欣赏》 https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf
 * FSD-BlueEffie的博客《梦幻西游手游 美术资源加密分析》http://blog.csdn.net/blueeffie/article/details/50971665
 * Kaitiren的专栏《Quick-cocos2d-x 与Cocos2dx 区别》http://blog.csdn.net/kaitiren/article/details/35276177
