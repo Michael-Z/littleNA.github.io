@@ -402,7 +402,7 @@ struct Lrc4
 &emsp;&emsp;不足之处：luajit的反编译并不完美，用的是luajit-decomp反编译工具，工具的作者也说只是满足了他自己的需求，还有一个luajit反编译是python写的工具ljd。其次梦幻luac的反编译部分代码反编译失败，修复过程请看这篇文章。
 
 # 参考文章
-* 腾讯游戏安全中心《Lua游戏逆向及破解方法介绍》 http://gslab.qq.com/portal.php?mod=view&aid=173
-* 云风《Lua源码欣赏》 https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf
-* FSD-BlueEffie的博客《梦幻西游手游 美术资源加密分析》http://blog.csdn.net/blueeffie/article/details/50971665
-* Kaitiren的专栏《Quick-cocos2d-x 与Cocos2dx 区别》http://blog.csdn.net/kaitiren/article/details/35276177
+* 腾讯游戏安全中心 《Lua游戏逆向及破解方法介绍》 http://gslab.qq.com/portal.php?mod=view&aid=173
+* 云风 《Lua源码欣赏》 https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf
+* FSD-BlueEffie的博客 《梦幻西游手游 美术资源加密分析》 http://blog.csdn.net/blueeffie/article/details/50971665
+* Kaitiren的专栏 《Quick-cocos2d-x 与Cocos2dx 区别》 http://blog.csdn.net/kaitiren/article/details/35276177
