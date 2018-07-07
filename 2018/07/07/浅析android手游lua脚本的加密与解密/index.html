@@ -108,13 +108,13 @@
 
 
 
-  <meta name="description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎大牛前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKiller">
+  <meta name="description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKille">
 <meta name="keywords" content="lua,luajit,手游安全">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅析android手游lua脚本的加密与解密">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/index.html">
 <meta property="og:site_name" content="littleNA&#39;s blog">
-<meta property="og:description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎大牛前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKiller">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKille">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/luac.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/luajit.png">
@@ -139,10 +139,10 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_10.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_11.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_12.png">
-<meta property="og:updated_time" content="2018-07-07T10:13:31.428Z">
+<meta property="og:updated_time" content="2018-07-07T11:18:49.183Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析android手游lua脚本的加密与解密">
-<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎大牛前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKiller">
+<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKille">
 <meta name="twitter:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/luac.png">
 
 
@@ -406,7 +406,7 @@
                 
               
 
-              <time title="创建时间：2018-07-07 16:01:12 / 修改时间：18:13:31" itemprop="dateCreated datePublished" datetime="2018-07-07T16:01:12+08:00">2018-07-07</time>
+              <time title="创建时间：2018-07-07 16:01:12 / 修改时间：19:18:49" itemprop="dateCreated datePublished" datetime="2018-07-07T16:01:12+08:00">2018-07-07</time>
             
 
             
@@ -473,7 +473,7 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎大牛前来交流。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。</p>
 <p>&emsp;&emsp;主要用到的工具和环境：</p>
 <blockquote>
 <ul>
@@ -487,11 +487,11 @@
 </ul>
 </blockquote>
 <a id="more"></a>
-<h1 id="lua-现状分析"><a href="#lua-现状分析" class="headerlink" title="lua 现状分析"></a>lua 现状分析</h1><p>&emsp;&emsp;去年的那篇文章这一章没有写的，今年补上了一篇lua加解密的相关工作，请看:</p>
+<h1 id="lua-现状分析"><a href="#lua-现状分析" class="headerlink" title="lua 现状分析"></a>lua 现状分析</h1><p>&emsp;&emsp;去年的那篇文章这一章没有写的，今年补上了一篇lua加解密的相关工作，请看：<a href="https://litna.top/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/" target="_blank" rel="noopener">《浅析android手游lua脚本的加密与解密（前传）》</a></p>
 <h1 id="lua-各文件关系"><a href="#lua-各文件关系" class="headerlink" title="lua 各文件关系"></a>lua 各文件关系</h1><p>&emsp;&emsp;在学习lua手游解密过程中，遇到的lua文件不外乎就3种。其中.lua后缀的文件是明文代码，直接用记事本就能打开，.luac是lua脚本编译后的字节码文件，文件头为0x1B 0x4C 0x75 0x61，lua虚拟机能够直接解析lua和luac脚本文件，而.luaJIT是另一个lua的实现版本（不是lua的原作者写的），JIT是指Just-In-Time（即时解析运行），luaJIT相比lua和luac更加高效，文件头是0x1B 0x4C 0x4A：</p>
-<p>&emsp;&emsp;luac:</p>
+<p>&emsp;&emsp;luac 文件头如下：</p>
 <img src="/2018/07/07/浅析android手游lua脚本的加密与解密/luac.png">
-<p>&emsp;&emsp;luaJIT:</p>
+<p>&emsp;&emsp;luaJIT 文件头如下：</p>
 <img src="/2018/07/07/浅析android手游lua脚本的加密与解密/luajit.png">
 <h1 id="lua-脚本保护"><a href="#lua-脚本保护" class="headerlink" title="lua 脚本保护"></a>lua 脚本保护</h1><p>&emsp;&emsp;一般有安全意识的游戏厂商都不会直接把lua源码脚本打包到APK中发布，所以一般对lua脚本的保护有下面3种：</p>
 <p><strong>1. 普通的对称加密，在加载脚本之前解密</strong></p>
@@ -500,7 +500,7 @@
 <p>&emsp;&emsp;因为cocos2d-x使用的luaJIT，而且luaJIT反编译后的结果阅读起来比较麻烦，所以这种情况能够较好的保护lua源码。这个情况主要是先解密后反编译，反编译主要是通过luajit-decomp项目，它能够将luajit字节码反编译成伪lua代码。</p>
 <p><strong>3. 修改lua虚拟机中opcode的顺序</strong></p>
 <p>&emsp;&emsp;这种情况主要是修改lua虚拟机源码，再通过修改过的虚拟机将lua脚本编译成luac字节码，达到保护的目的。这种情况如果直接用上面的反编译工具是不能将luac反编译的，需要在虚拟机的引擎中分析出相对应的opcode，然后修复反编译工具luadec 源码中的 opcode 并重新编译，编译后的文件就能进行反编译了，后面会具体分析。</p>
-<p>&emsp;&emsp;在破解手游源码中，上面的三种情况可能会交叉遇到。</p>
+<p>&emsp;&emsp;在破解手游过程中，上面的三种情况可能会交叉遇到。</p>
 <h1 id="获取lua源码的一般方法"><a href="#获取lua源码的一般方法" class="headerlink" title="获取lua源码的一般方法"></a>获取lua源码的一般方法</h1><p>&emsp;&emsp;这里主要介绍4种方法，都会在后面用实例说明。</p>
 <p><strong>1. 静态分析so解密方法</strong></p>
 <p>&emsp;&emsp;这种方法需要把解密的过程全部分析出来，比较费时费力，主要是通过ida定位到luaL_loadbuffer函数，然后往上回溯，分析出解密的过程。</p>
@@ -557,7 +557,7 @@ out：反编译后的结果
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">decryptLua_Mhxy</span><span class="params">(<span class="built_in">string</span> strFilePath, <span class="built_in">string</span> strSaveDir)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> bResult = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">char</span> *szBuffer = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">int</span> nBufferSize = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        CCFileUtils *utils = CCFileUtils::sharedFileUtils();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> ulFileSize = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">char</span> *szFileData = (<span class="keyword">char</span>*)utils-&gt;getFileData(strFilePath.c_str(), <span class="string">"rb"</span>, &amp;ulFileSize);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strncmp</span>(szFileData, <span class="string">"L:grxx"</span>, <span class="number">6</span>))</span><br><span class="line">        &#123;</span><br><span class="line">               <span class="keyword">if</span> (!<span class="built_in">strncmp</span>(szFileData, <span class="string">"__sign_of_g18_enc__"</span>, <span class="number">0x13</span>))</span><br><span class="line">               &#123;</span><br><span class="line">                       szBuffer = szFileData + <span class="number">0x13</span>;</span><br><span class="line">                       nBufferSize = ulFileSize - <span class="number">0x13</span>;</span><br><span class="line"></span><br><span class="line">                       bResult = decrypt((<span class="keyword">unsigned</span> <span class="keyword">char</span>*)szBuffer, nBufferSize);</span><br><span class="line">               &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strncmp</span>(szFileData + <span class="number">6</span>, <span class="string">"__sign_of_g18_enc__"</span>, <span class="number">0x13</span>))</span><br><span class="line">        &#123;</span><br><span class="line">               <span class="keyword">unsigned</span> <span class="keyword">char</span> *pData = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)szFileData + <span class="number">0x19</span>;</span><br><span class="line">               <span class="keyword">int</span> nLen = ulFileSize - <span class="number">0x19</span>;</span><br><span class="line"></span><br><span class="line">               bResult = decrypt(pData, nLen);</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (ZipUtils::isGZipBuffer(pData, nLen))</span><br><span class="line">               &#123;</span><br><span class="line">                       nBufferSize = ZipUtils::ccInflateMemory(pData, nLen, (<span class="keyword">unsigned</span> <span class="keyword">char</span>**)&amp;szBuffer);</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (ZipUtils::isCCZBuffer(pData, nLen))</span><br><span class="line">               &#123;</span><br><span class="line">                       nBufferSize = ZipUtils::inflateCCZBuffer(pData, nLen, (<span class="keyword">unsigned</span> <span class="keyword">char</span>**)&amp;szBuffer);</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (LzmaUtils::isLzmaBuffer(pData, nLen))</span><br><span class="line">               &#123;</span><br><span class="line">                       nBufferSize = LzmaUtils::inflateLzmaBuffer(pData, nLen, (<span class="keyword">unsigned</span> <span class="keyword">char</span>**)&amp;szBuffer);</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span></span><br><span class="line">               &#123;</span><br><span class="line">                       bResult = <span class="literal">false</span>;</span><br><span class="line">               &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(bResult)</span><br><span class="line">               saveLuaData(szBuffer, nBufferSize, strSaveDir);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> bResult;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;解密函数过程如下：</p>
 <img src="/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_5.png">
-<p>decrypt()实现代码如下：</p>
+<p>&emsp;&emsp;decrypt()实现代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">decrypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *pData, <span class="keyword">int</span> nLen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        Lrc4 *pLrc4 = <span class="keyword">new</span> Lrc4;</span><br><span class="line">        Lrc4_lrc4(pLrc4);</span><br><span class="line">        Lrc4_s(pLrc4, pData, nLen);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;Lrc4结构如下:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DATA_SIZE 256</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Lrc4</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> pData[DATA_SIZE];  <span class="comment">//初始化时计算得到的256个字节</span></span><br><span class="line">        <span class="keyword">int</span> nIndex;                      <span class="comment">//记录下标</span></span><br><span class="line">        <span class="keyword">int</span> nPreIndex;                   <span class="comment">//记录前一个下标</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -581,7 +581,7 @@ out：反编译后的结果
 <p>&emsp;&emsp;不足之处：luajit的反编译并不完美，用的是luajit-decomp反编译工具，工具的作者也说只是满足了他自己的需求，还有一个luajit反编译是python写的工具ljd。其次梦幻luac的反编译部分代码反编译失败，修复过程请看这篇文章。</p>
 <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
 <li>腾讯游戏安全中心《Lua游戏逆向及破解方法介绍》 <a href="http://gslab.qq.com/portal.php?mod=view&amp;aid=173" target="_blank" rel="noopener">http://gslab.qq.com/portal.php?mod=view&amp;aid=173</a></li>
-<li>云风《Lua源码欣赏》<a href="http://download.csdn.net/download/nomoonon/8551481" target="_blank" rel="noopener">http://download.csdn.net/download/nomoonon/8551481</a></li>
+<li>云风《Lua源码欣赏》 <a href="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf" target="_blank" rel="noopener">https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf</a></li>
 <li>FSD-BlueEffie的博客《梦幻西游手游 美术资源加密分析》<a href="http://blog.csdn.net/blueeffie/article/details/50971665" target="_blank" rel="noopener">http://blog.csdn.net/blueeffie/article/details/50971665</a></li>
 <li>Kaitiren的专栏《Quick-cocos2d-x 与Cocos2dx 区别》<a href="http://blog.csdn.net/kaitiren/article/details/35276177" target="_blank" rel="noopener">http://blog.csdn.net/kaitiren/article/details/35276177</a></li>
 </ul>
@@ -666,6 +666,22 @@ out：反编译后的结果
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/" rel="prev" title="浅析android手游lua脚本的加密与解密（前传）">
+                浅析android手游lua脚本的加密与解密（前传） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
       
       
@@ -741,7 +757,7 @@ out：反编译后的结果
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -768,8 +784,6 @@ out：反编译后的结果
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
-                    
-                      
                     
                       
                     
