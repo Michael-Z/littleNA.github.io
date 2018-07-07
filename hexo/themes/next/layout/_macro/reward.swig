@@ -8,14 +8,12 @@
     {% if theme.wechatpay %}
       <div id="wechat" style="display: inline-block">
         <img id="wechat_qr" src="{{ url_for(theme.wechatpay) }}" alt="{{ author }} {{ __('reward.wechatpay') }}"/>
-        <p>{{ __('reward.wechatpay') }}</p>
       </div>
     {% endif %}
 
     {% if theme.alipay %}
       <div id="alipay" style="display: inline-block">
         <img id="alipay_qr" src="{{ url_for(theme.alipay) }}" alt="{{ author }} {{ __('reward.alipay') }}"/>
-        <p>{{ __('reward.alipay') }}</p>
       </div>
     {% endif %}
 
