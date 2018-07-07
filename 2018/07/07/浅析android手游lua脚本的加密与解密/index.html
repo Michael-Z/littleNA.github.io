@@ -139,7 +139,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_10.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_11.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/5.3_12.png">
-<meta property="og:updated_time" content="2018-07-07T11:18:49.183Z">
+<meta property="og:updated_time" content="2018-07-07T11:25:51.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析android手游lua脚本的加密与解密">
 <meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。 &amp;emsp;&amp;emsp;主要用到的工具和环境：   win7系统 cocos2d-x 开发环境 IDA6.8 vs2015 AndroidKille">
@@ -406,12 +406,24 @@
                 
               
 
-              <time title="创建时间：2018-07-07 16:01:12 / 修改时间：19:18:49" itemprop="dateCreated datePublished" datetime="2018-07-07T16:01:12+08:00">2018-07-07</time>
+              <time title="创建时间：2018-07-07 16:01:12" itemprop="dateCreated datePublished" datetime="2018-07-07T16:01:12+08:00">2018-07-07</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-07 19:25:51" itemprop="dateModified" datetime="2018-07-07T19:25:51+08:00">19:25:51</time>
               
             
           </span>
@@ -580,10 +592,10 @@ out：反编译后的结果
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>&emsp;&emsp;总结一下解密lua的流程，拿到APK，首先反编译，查看lib目录下是否有libcocos2dlua.so，存在的话很大可能这个游戏就是lua编写，其中lib目录下文件最大的就是目标so文件，一般情况就是libcocos2dlua.so。接着再看assert文件夹有没有可疑的文件，手游的资源文件会放到这个文件夹下，包括lua脚本。其次分析lua加密的方式并选择解密脚本的方式，如果可以ida动态调试，一般都会选择用idc脚本dump下lua代码。最后如果得到的不是lua明文，还需要再反编译一下。</p>
 <p>&emsp;&emsp;不足之处：luajit的反编译并不完美，用的是luajit-decomp反编译工具，工具的作者也说只是满足了他自己的需求，还有一个luajit反编译是python写的工具ljd。其次梦幻luac的反编译部分代码反编译失败，修复过程请看这篇文章。</p>
 <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
-<li>腾讯游戏安全中心《Lua游戏逆向及破解方法介绍》 <a href="http://gslab.qq.com/portal.php?mod=view&amp;aid=173" target="_blank" rel="noopener">http://gslab.qq.com/portal.php?mod=view&amp;aid=173</a></li>
-<li>云风《Lua源码欣赏》 <a href="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf" target="_blank" rel="noopener">https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf</a></li>
-<li>FSD-BlueEffie的博客《梦幻西游手游 美术资源加密分析》<a href="http://blog.csdn.net/blueeffie/article/details/50971665" target="_blank" rel="noopener">http://blog.csdn.net/blueeffie/article/details/50971665</a></li>
-<li>Kaitiren的专栏《Quick-cocos2d-x 与Cocos2dx 区别》<a href="http://blog.csdn.net/kaitiren/article/details/35276177" target="_blank" rel="noopener">http://blog.csdn.net/kaitiren/article/details/35276177</a></li>
+<li>腾讯游戏安全中心 《Lua游戏逆向及破解方法介绍》 <a href="http://gslab.qq.com/portal.php?mod=view&amp;aid=173" target="_blank" rel="noopener">http://gslab.qq.com/portal.php?mod=view&amp;aid=173</a></li>
+<li>云风 《Lua源码欣赏》 <a href="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf" target="_blank" rel="noopener">https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf</a></li>
+<li>FSD-BlueEffie的博客 《梦幻西游手游 美术资源加密分析》 <a href="http://blog.csdn.net/blueeffie/article/details/50971665" target="_blank" rel="noopener">http://blog.csdn.net/blueeffie/article/details/50971665</a></li>
+<li>Kaitiren的专栏 《Quick-cocos2d-x 与Cocos2dx 区别》 <a href="http://blog.csdn.net/kaitiren/article/details/35276177" target="_blank" rel="noopener">http://blog.csdn.net/kaitiren/article/details/35276177</a></li>
 </ul>
 
       
