@@ -29,13 +29,13 @@ categories: lua加解密
 # lua 各文件关系
 &emsp;&emsp;在学习lua手游解密过程中，遇到的lua文件不外乎就3种。其中.lua后缀的文件是明文代码，直接用记事本就能打开，.luac是lua脚本编译后的字节码文件，文件头为0x1B 0x4C 0x75 0x61，lua虚拟机能够直接解析lua和luac脚本文件，而.luaJIT是另一个lua的实现版本（不是lua的原作者写的），JIT是指Just-In-Time（即时解析运行），luaJIT相比lua和luac更加高效，文件头是0x1B 0x4C 0x4A：
 
-luac:
+&emsp;&emsp;luac:
 
-![luac 头](浅析android手游lua脚本的加密与解密/luac.png)
+{% asset_img luac.png %}
 
-luaJIT:
+&emsp;&emsp;luaJIT:
 
-![luajit 头](浅析android手游lua脚本的加密与解密/luajit.png)
+{% asset_img luajit.png %}
 
 # lua 脚本保护
 &emsp;&emsp;一般有安全意识的游戏厂商都不会直接把lua源码脚本打包到APK中发布，所以一般对lua脚本的保护有下面3种：
@@ -85,11 +85,11 @@ luaJIT:
 
 &emsp;&emsp;OK，了解了原理接下来开始动手分析，将libcocos2dlua.so拖到IDA中加载，函数中直接搜索loadChunksFromZIP，定位后F5分析。
 
-![ida F5](浅析android手游lua脚本的加密与解密/5.1_1.png)
+{% asset_img 5.1_1.png %}
 
 &emsp;&emsp;对该函数一直向上回溯（交叉引用 ），来到下图，发现解密的密钥和签名，其中xiaoxian为密钥，XXFISH为签名
 
-![解密函数](浅析android手游lua脚本的加密与解密/5.1_2.png)
+{% asset_img 5.1_2.png %}
 
 &emsp;&emsp;进去函数里面看看，其实会发现调用了XXTea算法，这里我们也可以直接分析loadChunksFromZIP函数的源码（所以配置一个cocos2d的开发环境还是非常有必要的）。查看源码里的lua_loadChunksFromZIP函数的原型：
 ```c++
@@ -166,22 +166,21 @@ void decryptZipFile_54BY(string strZipFilePath)
 ```
 &emsp;&emsp;解密后的文件如下：
 
-![解密后的文件](浅析android手游lua脚本的加密与解密/5.1_3.png)
+{% asset_img 5.1_3.png %}
 
 &emsp;&emsp;这几个都是更新游戏的代码，是luajit的文件，所以接下来需要反编译。反编译需要确定lua和luajit的版本，我们通过IDA查看下lua版本和luajit版本，字符串中分别搜索lua+空格和luajit+空格：
 
 &emsp;&emsp;lua版本为5.1
 
-![5.1的lua引擎](浅析android手游lua脚本的加密与解密/5.1_4.png)
+{% asset_img 5.1_4.png %}
 
 &emsp;&emsp;luajit版本为2.1.0
 
-![2.1.0的luajit引擎](浅析android手游lua脚本的加密与解密/5.1_5.png)
+{% asset_img 5.1_5.png %}
 
 &emsp;&emsp;这篇文章反编译用到的是luajit-decomp，这里需要注意，luajit-decomp默认的lua 5.1 和luajit 2.0.2，我们需要下载对应lua和luajit的版本，编译后替换luajit-decomp下的lua51.dll、luajit.exe、jit文件夹。反编译时需要替换的文件和文件夹如下：
 
-![2.1.0的luajit引擎](浅析android手游lua脚本的加密与解密/5.1_6.png)
-
+{% asset_img 5.1_6.png %}
 
 &emsp;&emsp;对于这个游戏，我们需要下载版本为2.1.0-beta2的luajit，并且编译生成文件后，复制LuaJIT-2.1.0-beta2\src路径下的lua51.dll、luajit.exe文件和jit文件夹覆盖到luajit-decomp目录中。luajit-decomp用的是autolt3语言，原脚本默认是只反编译当前目录下的test.lua文件，所以需要修改decoder.au3文件的代码。修改后的代码另存为jitdecomp.au3文件，接着编译au3代码为jitdecomp.exe。我这里还增加了data目录，该目录下有3个文件夹，分别为：
 
@@ -191,14 +190,14 @@ void decryptZipFile_54BY(string strZipFilePath)
 
 &emsp;&emsp;将解密后的文件放到luajit文件夹，运行 jitdecomp.exe，反编译的结果在out目录下，结果如下：
 
-![解密后的文件内容](浅析android手游lua脚本的加密与解密/5.1_7.png)
+{% asset_img 5.1_7.png %}
 
 &emsp;&emsp;这个反编译工具写得并不好，反编译后的lua文件阅读起来相对比较困难，而且反编译的lua格式有问题，所以不能用lua编辑器格式化代码。
 
 ## 捕鱼达人4
 &emsp;&emsp;这个游戏主要是用ida动态调试so文件，然后用idc脚本把lua文件全部dump下来的方法。首先用AndroidKiller加载apk，在lib目录下有3个文件夹，不同的手机cpu型号对应不同的文件夹 。本人的手机加载的目标so文件在armeabi-v7a文件下：
 
-![游戏文件结构](浅析android手游lua脚本的加密与解密/5.2_1.png)
+{% asset_img 5.2_1.png %}
 
 &emsp;&emsp;接着，ida加载libcocos2dlua.so文件，定位到函数luaL_loadbuffer，可以在函数中直接搜索，也可以字符串搜索 "[LUA ERROR]" 来定位到函数中，函数分析如下：
 
@@ -228,11 +227,8 @@ static main()
         }
 
         Message ("地址：%a, 事件id：%x\n", GetEventEa(), GetEventId());      // 断点发生，打印消息
-
         strFileName = GetString(GetRegValue("R3"),-1,0);                    // 获取文件路径名
-
         strFileName = substr(strFileName,strrstr(strFileName,"/")+1,-1);    // 获取最后一个‘/’后面的名字（文件的名字）去掉路径
-
         strPath = sprintf("c:\\lua\\%s",strFileName);                       // 保存lua的本地路径
 
         fp = fopen(strPath,"wb");
@@ -261,27 +257,26 @@ static strrstr(str,substr1)
 
 &emsp;&emsp;ida动态调试so文件网上有很多文章，这里就不详细说明了。通过idc脚本获取的部分数据如下：
 
-![解密后的代码](浅析android手游lua脚本的加密与解密/5.2_2.png)
+{% asset_img 5.2_2.png %}
 
 &emsp;&emsp;虽然文件的后缀名是.luac，但其实都是明文的lua脚本。
 
 ## 梦幻西游手游
 &emsp;&emsp;AndroidKiller反编译apk，查看lib下存在libcocos2dlua.so，基本上确定是lua写的：
 
-![游戏文件结构](浅析android手游lua脚本的加密与解密/5.3_1.png)
+{% asset_img 5.3_1.png %}
 
 &emsp;&emsp;在assets\HashRes目录下，存在很多被加密的文件，这里存放的是lua脚本和游戏的其他资源文件：
 
-![游戏文件结构](浅析android手游lua脚本的加密与解密/5.3_2.png)
+{% asset_img 5.3_2.png %}
 
 &emsp;&emsp;接着找lua脚本的解密过程，用ida加载libcocos2dlua.so文件，搜索luaL_loadbuffer函数，定位到关键位置，这里就是解密的过程了：
 
-
-![IDA定位](浅析android手游lua脚本的加密与解密/5.3_3.png)
+{% asset_img 5.3_3.png %}
 
 &emsp;&emsp;分析解密lua文件过程如下：
 
-![解密流程](浅析android手游lua脚本的加密与解密/5.3_4.png)
+{% asset_img 5.3_4.png %}
 
 &emsp;&emsp;这里需要实现Lrc4解密的相关函数，还有Lzma解压函数需要自己实现，其他几个都是cocos2d平台自带的函数，直接调用就可以了。上面的流程图实现的函数如下：
 
@@ -341,7 +336,7 @@ bool decryptLua_Mhxy(string strFilePath, string strSaveDir)
 
 &emsp;&emsp;解密函数过程如下：
 
-![LC4解密流程](浅析android手游lua脚本的加密与解密/5.3_5.png)
+{% asset_img 5.3_5.png %}
 
 decrypt()实现代码如下：
 
@@ -371,27 +366,27 @@ struct Lrc4
 
 &emsp;&emsp;其他函数的具体实现请看DecryptData_Mhxy.cpp文件，这里就不贴代码了。解密后的文件如下：
 
-![解密后的文件](浅析android手游lua脚本的加密与解密/5.3_6.png)
+{% asset_img 5.3_6.png %}
 
 &emsp;&emsp;可以看出，解密后的文件为luac字节码，但是这里直接用反编译工具是不能反编译luac字节码的，因为游戏的opcode被修改过了，我们需要找到游戏opcode的顺序，然后生成一个对应opcode的luadec.exe文件才能反编译。下表为修改前后的opcode：
 
-![opcode](浅析android手游lua脚本的加密与解密/5.3_7.png)
+{% asset_img 5.3_7.png %}
 
 &emsp;&emsp;lua虚拟机的相关内容就不说明了，百度很多，这里说明下如何还原opcode的顺序。首先需要定位到opmode的地方，IDA搜索字符串"LOADK"，定位到opname的地方，交叉引用到代码，找到opmode：
 
-![opmode](浅析android手游lua脚本的加密与解密/5.3_8.png)
+{% asset_img 5.3_8.png %}
 
 &emsp;&emsp;off_B02CEC为opname的地址，byte_A67C00为opmode的地址，进入opmode地址查看：
 
-![opmode](浅析android手游lua脚本的加密与解密/5.3_9.png)
+{% asset_img 5.3_9.png %}
 
 &emsp;&emsp;这里没有把全部数据截图出来，可以看出，这里的opmode跟原opmode是不对应的。原opmode在lua源码中的lopcodes.c文件中：
 
-![源码opcode](浅析android手游lua脚本的加密与解密/5.3_10.png)
+{% asset_img 5.3_10.png %}
 
 &emsp;&emsp;源码用了宏，计算出来的结果就是上表中opmode的结果。这里对比opmode就可以快速对比出opcode，因为opmode不相等，那么opcode也肯定不相等，到这一步，已经能还原部分opcode了，因为有一些opmode是唯一的。比如下面几个：
 
-![修复的opcode](浅析android手游lua脚本的加密与解密/5.3_11.png)
+{% asset_img 5.3_11.png %}
 
 &emsp;&emsp;如SETLIST，原opcode为34，opmode为0x14，找到的opmode的第8个字节也为0x14，则实际上SETLIST的opcode为8。
 
@@ -399,7 +394,7 @@ struct Lrc4
 
 &emsp;&emsp;最后修改lua源码 lopcodes.h中的opcode、lopcodes.c的opname和opmode，重新编译并生成luadec51 .exe（需要将lua源码中的src目录放到luadec51的lua目录下才能编译），就OK了，写个批处理文件就可以批量反编译。一个文件反编译的结果：
 
-![反编译后的文件](浅析android手游lua脚本的加密与解密/5.3_12.png)
+{% asset_img 5.3_12.png %}
 
 # 总结
 &emsp;&emsp;总结一下解密lua的流程，拿到APK，首先反编译，查看lib目录下是否有libcocos2dlua.so，存在的话很大可能这个游戏就是lua编写，其中lib目录下文件最大的就是目标so文件，一般情况就是libcocos2dlua.so。接着再看assert文件夹有没有可疑的文件，手游的资源文件会放到这个文件夹下，包括lua脚本。其次分析lua加密的方式并选择解密脚本的方式，如果可以ida动态调试，一般都会选择用idc脚本dump下lua代码。最后如果得到的不是lua明文，还需要再反编译一下。
