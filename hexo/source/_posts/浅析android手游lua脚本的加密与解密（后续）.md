@@ -283,4 +283,4 @@ char* ProcessCode(Proto* f, int indent, int func_checking, char* funcnumstr)
 &emsp;&emsp;最后完美运行luadec，反编译成功。
 
 # 例子3：梦幻西游手游
-&emsp;&emsp;这个例子内容较多，并且这篇文章也够长了，索性就把这节单独写成一篇[文章]((https://litna.top/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/))。
+&emsp;&emsp;这个例子内容较多，并且这篇文章也够长了，索性就把这节单独写成一篇[文章](https://litna.top/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/)。
