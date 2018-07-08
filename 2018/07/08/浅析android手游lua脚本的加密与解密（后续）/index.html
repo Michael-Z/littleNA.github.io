@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/4.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/5.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/6.png">
-<meta property="og:updated_time" content="2018-07-08T15:49:25.667Z">
+<meta property="og:updated_time" content="2018-07-08T15:53:49.801Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析android手游lua脚本的加密与解密（后续）">
 <meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;趁着周末，把lua的后续文章也写完了。 反编译对抗&amp;emsp;&amp;emsp;众所周知，反汇编/反编译 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 反汇编/反编译 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头">
@@ -406,7 +406,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-08 23:49:25" itemprop="dateModified" datetime="2018-07-08T23:49:25+08:00">23:49:25</time>
+                <time title="修改时间：2018-07-08 23:53:49" itemprop="dateModified" datetime="2018-07-08T23:53:49+08:00">23:53:49</time>
               
             
           </span>
@@ -518,7 +518,7 @@
 <p>&emsp;&emsp;发现上一层函数是listUpvalues函数，也就是说luadec在解析upvalues时出错了，深入分析发现其实是由于文件中的upvalue变量名被抹掉了，导致解析出错，我们只需要在ProcessCode函数（decompile.c文件）调用listUpvalues函数前，增加临时的upvalue命名就可以了，修改代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">ProcessCode</span><span class="params">(Proto* f, <span class="keyword">int</span> indent, <span class="keyword">int</span> func_checking, <span class="keyword">char</span>* funcnumstr)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">       <span class="comment">// make function comment</span></span><br><span class="line">       StringBuffer_printf(str, <span class="string">"-- function num : %s"</span>, funcnumstr);</span><br><span class="line">       <span class="keyword">if</span> (NUPS(f) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">              <span class="comment">// add by littleNA</span></span><br><span class="line">              <span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;f-&gt;sizeupvalues; i++) &#123;</span><br><span class="line">                     <span class="keyword">char</span> tmp[<span class="number">10</span>];</span><br><span class="line">                     <span class="built_in">sprintf</span>(tmp, <span class="string">"up_%d"</span>, i);</span><br><span class="line">                     f-&gt;upvalues[i].name = luaS_new(f-&gt;L, tmp);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="comment">// add by littleNA end</span></span><br><span class="line">              StringBuffer_add(str, <span class="string">" , upvalues : "</span>);</span><br><span class="line">              listUpvalues(f, str);</span><br><span class="line">       &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;最后完美运行luadec，反编译成功。</p>
-<h1 id="例子3：梦幻西游手游"><a href="#例子3：梦幻西游手游" class="headerlink" title="例子3：梦幻西游手游"></a>例子3：梦幻西游手游</h1><p>&emsp;&emsp;这个例子内容较多，并且这篇文章也够长了，索性就把这节单独写成一篇<a href="(https://litna.top/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/">文章</a>)。</p>
+<h1 id="例子3：梦幻西游手游"><a href="#例子3：梦幻西游手游" class="headerlink" title="例子3：梦幻西游手游"></a>例子3：梦幻西游手游</h1><p>&emsp;&emsp;这个例子内容较多，并且这篇文章也够长了，索性就把这节单独写成一篇<a href="https://litna.top/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/" target="_blank" rel="noopener">文章</a>。</p>
 
       
     </div>
