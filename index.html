@@ -340,6 +340,399 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="littleNA">
+      <meta itemprop="description" content="追求本质，分享知识，授人以渔">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="littleNA's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/" itemprop="url">
+                  梦幻手游部分Luac反编译失败的解决方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-08 23:01:33" itemprop="dateCreated datePublished" datetime="2018-07-08T23:01:33+08:00">2018-07-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-08 23:49:26" itemprop="dateModified" datetime="2018-07-08T23:49:26+08:00">23:49:26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/lua加解密/" itemprop="url" rel="index"><span itemprop="name">lua加解密</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/" class="leancloud_visitors" data-flag-title="梦幻手游部分Luac反编译失败的解决方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;这一篇是去年学习破解梦幻西游手游lua代码时记录的一些问题，今天将其整理并共享出来，所以不一定适合现在版本的梦幻手游，大家还是以参考为目的呗。lua相关的文章（共4篇）到此也写完了，如果以后还有新的东西会继续更新，接下来会写几篇关于2018 腾讯游戏安全竞赛的详细分析，敬请期待。</p>
+<h1 id="十二处bug修复"><a href="#十二处bug修复" class="headerlink" title="十二处bug修复"></a>十二处bug修复</h1><p>&emsp;&emsp;当时反编译梦幻西游手游时遇到的问题大约有12个，修改完基本上可以完美复现lua源码，这里用的luadec5.1版本。</p>
+<h2 id="修复一"><a href="#修复一" class="headerlink" title="修复一"></a>修复一</h2><p>&emsp;&emsp;<strong>问题1：</strong> 由于梦幻手游lua的opcode是被修改过的，之前的解决方案是找到梦幻的opcode，替换掉反编译工具的原opcode，并且修改opmode，再进行反编译。问题是部分测试的结果是可以的，但是当对整个手游的luac字节码反编译时，会出现各种错误，原因是luadec5.1 在很多地方都默认了opcode的顺序，并进行了特殊处理，所以需要找到这些特殊处理的地方一一修改。不过这样很麻烦，从而想到另外一种方式，不修改原来的opcode和opmode，而是在luadec解析到字节码的时候，将opcode还原成原来的opcode。</p>
+<p>&emsp;&emsp;<strong>解决1：</strong> 定位到解析code的位置在  lundump.c –&gt; LoadFunction –&gt; LoadCode （位置不唯一，可以看上一篇腾讯比赛的修复），当执行完LoadCode函数的时候，f变量则指向了code的结构，在这之后执行自己写的函数ConvertCode函数，如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add by littleNA</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ConvertCode</span><span class="params">(Proto *f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pnOpTbl[] = &#123; <span class="number">3</span>,<span class="number">13</span>,<span class="number">18</span>,<span class="number">36</span>,<span class="number">27</span>,<span class="number">10</span>,<span class="number">20</span>,<span class="number">25</span>,<span class="number">34</span>,<span class="number">2</span>,<span class="number">32</span>,<span class="number">15</span>,<span class="number">30</span>,<span class="number">16</span>,<span class="number">31</span>,<span class="number">9</span>,<span class="number">26</span>,<span class="number">24</span>,<span class="number">29</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">28</span>,<span class="number">4</span>,<span class="number">17</span>,<span class="number">33</span>,<span class="number">0</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">5</span>,<span class="number">14</span>,<span class="number">8</span>,<span class="number">19</span>,<span class="number">35</span>,<span class="number">12</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">37</span> &#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> pc = <span class="number">0</span>; pc &lt; f-&gt;sizecode; pc++)</span><br><span class="line">        &#123;</span><br><span class="line">               Instruction i = f-&gt;code[pc];</span><br><span class="line">               OpCode o = GET_OPCODE(i);</span><br><span class="line">               SET_OPCODE(i, pnOpTbl[o]);</span><br><span class="line">               f-&gt;code[pc] = i;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+	
+    
+    
+    
+
+    
+
+    
+
+	<div>    
+	 
+	 
+	</div>
+	
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="littleNA">
+      <meta itemprop="description" content="追求本质，分享知识，授人以渔">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="littleNA's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/" itemprop="url">
+                  浅析android手游lua脚本的加密与解密（后续）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-08 22:15:44" itemprop="dateCreated datePublished" datetime="2018-07-08T22:15:44+08:00">2018-07-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-08 23:49:25" itemprop="dateModified" datetime="2018-07-08T23:49:25+08:00">23:49:25</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/lua加解密/" itemprop="url" rel="index"><span itemprop="name">lua加解密</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/" class="leancloud_visitors" data-flag-title="浅析android手游lua脚本的加密与解密（后续）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;趁着周末，把lua的后续文章也写完了。</p>
+<h1 id="反编译对抗"><a href="#反编译对抗" class="headerlink" title="反编译对抗"></a>反编译对抗</h1><p>&emsp;&emsp;众所周知，<strong>反汇编/反编译</strong> 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 反汇编/反编译 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：</p>
+<ol>
+<li>用调试器调试反编译工具为何解析错误，排查原因。</li>
+<li>用调试器调试原引擎是如何解析文件的。</li>
+<li>用文件格式解析工具解析文件，看哪个点解析出错。</li>
+</ol>
+<p>&emsp;&emsp;下面将以3个例子来实战lua反编译是如何被对抗的。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+	
+    
+    
+    
+
+    
+
+    
+
+	<div>    
+	 
+	 
+	</div>
+	
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -595,7 +988,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-07 19:25:51" itemprop="dateModified" datetime="2018-07-07T19:25:51+08:00">19:25:51</time>
+                <time title="修改时间：2018-07-08 23:49:24" itemprop="dateModified" datetime="2018-07-08T23:49:24+08:00">2018-07-08</time>
               
             
           </span>
@@ -658,7 +1051,7 @@
 
       
         
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续文章，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续<a href="(https://litna.top/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/">文章</a>)，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。</p>
 <p>&emsp;&emsp;主要用到的工具和环境：</p>
 <blockquote>
 <ul>
@@ -767,7 +1160,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -801,7 +1194,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

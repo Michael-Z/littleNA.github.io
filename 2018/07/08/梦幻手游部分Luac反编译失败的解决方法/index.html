@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言&amp;emsp;&amp;emsp;这一篇是去年学习破解梦幻西游手游lua代码时记录的一些问题，今天将其整理并共享出来，所以不一定适合现在版本的梦幻手游，大家还是以参考为目的呗。lua相关的文章（共4篇）到此也写完了，如果以后还有新的东西会继续更新，接下来会写几篇关于2018 腾讯游戏安全竞赛的详细分析，敬请期待。 十二处bug修复&amp;emsp;&amp;emsp;当时反编译梦幻西游手游时遇到的问题大约有12个，修">
+<meta name="keywords" content="lua,手游安全,luac反编译,梦幻西游手游">
+<meta property="og:type" content="article">
+<meta property="og:title" content="梦幻手游部分Luac反编译失败的解决方法">
+<meta property="og:url" content="http://yoursite.com/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/index.html">
+<meta property="og:site_name" content="littleNA&#39;s blog">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;这一篇是去年学习破解梦幻西游手游lua代码时记录的一些问题，今天将其整理并共享出来，所以不一定适合现在版本的梦幻手游，大家还是以参考为目的呗。lua相关的文章（共4篇）到此也写完了，如果以后还有新的东西会继续更新，接下来会写几篇关于2018 腾讯游戏安全竞赛的详细分析，敬请期待。 十二处bug修复&amp;emsp;&amp;emsp;当时反编译梦幻西游手游时遇到的问题大约有12个，修">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-08T15:49:26.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="梦幻手游部分Luac反编译失败的解决方法">
+<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;这一篇是去年学习破解梦幻西游手游lua代码时记录的一些问题，今天将其整理并共享出来，所以不一定适合现在版本的梦幻手游，大家还是以参考为目的呗。lua相关的文章（共4篇）到此也写完了，如果以后还有新的东西会继续更新，接下来会写几篇关于2018 腾讯游戏安全竞赛的详细分析，敬请期待。 十二处bug修复&amp;emsp;&amp;emsp;当时反编译梦幻西游手游时遇到的问题大约有12个，修">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>梦幻手游部分Luac反编译失败的解决方法 | littleNA's blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">littleNA's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">逆向世界</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="littleNA">
+      <meta itemprop="description" content="追求本质，分享知识，授人以渔">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="littleNA's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">梦幻手游部分Luac反编译失败的解决方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-08 23:01:33" itemprop="dateCreated datePublished" datetime="2018-07-08T23:01:33+08:00">2018-07-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-08 23:49:26" itemprop="dateModified" datetime="2018-07-08T23:49:26+08:00">23:49:26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/lua加解密/" itemprop="url" rel="index"><span itemprop="name">lua加解密</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/" class="leancloud_visitors" data-flag-title="梦幻手游部分Luac反编译失败的解决方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;这一篇是去年学习破解梦幻西游手游lua代码时记录的一些问题，今天将其整理并共享出来，所以不一定适合现在版本的梦幻手游，大家还是以参考为目的呗。lua相关的文章（共4篇）到此也写完了，如果以后还有新的东西会继续更新，接下来会写几篇关于2018 腾讯游戏安全竞赛的详细分析，敬请期待。</p>
+<h1 id="十二处bug修复"><a href="#十二处bug修复" class="headerlink" title="十二处bug修复"></a>十二处bug修复</h1><p>&emsp;&emsp;当时反编译梦幻西游手游时遇到的问题大约有12个，修改完基本上可以完美复现lua源码，这里用的luadec5.1版本。</p>
+<h2 id="修复一"><a href="#修复一" class="headerlink" title="修复一"></a>修复一</h2><p>&emsp;&emsp;<strong>问题1：</strong> 由于梦幻手游lua的opcode是被修改过的，之前的解决方案是找到梦幻的opcode，替换掉反编译工具的原opcode，并且修改opmode，再进行反编译。问题是部分测试的结果是可以的，但是当对整个手游的luac字节码反编译时，会出现各种错误，原因是luadec5.1 在很多地方都默认了opcode的顺序，并进行了特殊处理，所以需要找到这些特殊处理的地方一一修改。不过这样很麻烦，从而想到另外一种方式，不修改原来的opcode和opmode，而是在luadec解析到字节码的时候，将opcode还原成原来的opcode。</p>
+<p>&emsp;&emsp;<strong>解决1：</strong> 定位到解析code的位置在  lundump.c –&gt; LoadFunction –&gt; LoadCode （位置不唯一，可以看上一篇腾讯比赛的修复），当执行完LoadCode函数的时候，f变量则指向了code的结构，在这之后执行自己写的函数ConvertCode函数，如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add by littleNA</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ConvertCode</span><span class="params">(Proto *f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pnOpTbl[] = &#123; <span class="number">3</span>,<span class="number">13</span>,<span class="number">18</span>,<span class="number">36</span>,<span class="number">27</span>,<span class="number">10</span>,<span class="number">20</span>,<span class="number">25</span>,<span class="number">34</span>,<span class="number">2</span>,<span class="number">32</span>,<span class="number">15</span>,<span class="number">30</span>,<span class="number">16</span>,<span class="number">31</span>,<span class="number">9</span>,<span class="number">26</span>,<span class="number">24</span>,<span class="number">29</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">28</span>,<span class="number">4</span>,<span class="number">17</span>,<span class="number">33</span>,<span class="number">0</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">5</span>,<span class="number">14</span>,<span class="number">8</span>,<span class="number">19</span>,<span class="number">35</span>,<span class="number">12</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">37</span> &#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> pc = <span class="number">0</span>; pc &lt; f-&gt;sizecode; pc++)</span><br><span class="line">        &#123;</span><br><span class="line">               Instruction i = f-&gt;code[pc];</span><br><span class="line">               OpCode o = GET_OPCODE(i);</span><br><span class="line">               SET_OPCODE(i, pnOpTbl[o]);</span><br><span class="line">               f-&gt;code[pc] = i;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="修复二"><a href="#修复二" class="headerlink" title="修复二"></a>修复二</h2><p>&emsp;&emsp;<strong>问题2：</strong> 在文件头部 反编译出现错误  – DECOMPILER ERROR: Overwrote pending register.</p>
+<p>&emsp;&emsp;<strong>解决2：</strong> 分析发现，原来是解析OP_VARARG错误导致的。OP_VARARG主要的作用是复制B-1个参数到A寄存器中，而反编译工具复制了B个参数，多了一个。修改后的代码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">         <span class="keyword">case</span> OP_VARARG: <span class="comment">// Lua5.1 specific.</span></span><br><span class="line">         &#123;</span><br><span class="line">            <span class="keyword">int</span> i;</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">             * Read ... into register.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="keyword">if</span> (b==<span class="number">0</span>) &#123;</span><br><span class="line">                TRY(Assign(F, REGISTER(a), <span class="string">"..."</span>, a, <span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                 <span class="comment">// add by littleNA</span></span><br><span class="line">                 <span class="comment">// for(i = 0;i&lt;b;i++) &#123;</span></span><br><span class="line">                 <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; b<span class="number">-1</span>; i++) &#123;</span><br><span class="line">                      TRY(Assign(F, REGISTER(a+i), <span class="string">"..."</span>, a+i, <span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line">                 &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<h2 id="修复三"><a href="#修复三" class="headerlink" title="修复三"></a>修复三</h2><p>&emsp;&emsp;<strong>问题3：</strong> 在解析table出现反编译错误  – DECOMPILER ERROR: Confused about usage of 。registers!</p>
+<p>&emsp;&emsp;<strong>解决3：</strong> 分析发现，这里的OP_NEWTABLE 的c参数表示hash table中key的大小，而反编译代码中将c参数进行了错误转换，导致解析错误，修改代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add by littleNA</span></span><br><span class="line"><span class="comment">//#define fb2int(x)    (((x) &amp; 7) &lt;&lt; ((x) &gt;&gt; 3))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> fb2int(x)      ((((x) &amp; 7)^8) &gt;&gt; (((x) &gt;&gt; 3)-1))</span></span><br></pre></td></tr></table></figure>
+<h2 id="修复四"><a href="#修复四" class="headerlink" title="修复四"></a>修复四</h2><p>&emsp;&emsp;<strong>问题4：</strong> 反编译工具出错并且退出。</p>
+<p>&emsp;&emsp;<strong>解决4：</strong> 跟踪发现是在AddToTable函数中，当keyed为0时会调用PrintTable，而PrintTable释放了table，下次再调用table时内存访问失败，修改代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddToTable</span><span class="params">(Function* F, DecTable * tbl, <span class="keyword">char</span> *value, <span class="keyword">char</span> *key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   DecTableItem *item;</span><br><span class="line">   List *type;</span><br><span class="line">   <span class="keyword">int</span> index;</span><br><span class="line">   <span class="keyword">if</span> (key == <span class="literal">NULL</span>) &#123;</span><br><span class="line">      type = &amp;(tbl-&gt;numeric);</span><br><span class="line">      index = tbl-&gt;topNumeric;</span><br><span class="line">      tbl-&gt;topNumeric++;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      type = &amp;(tbl-&gt;keyed);</span><br><span class="line">      tbl-&gt;used++;</span><br><span class="line">      index = <span class="number">0</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   item = NewTableItem(value, index, key);</span><br><span class="line">   AddToList(type, (ListItem *) item);</span><br><span class="line">   <span class="comment">// <span class="doctag">FIXME:</span> should work with arrays, too</span></span><br><span class="line">   <span class="comment">// add by littleNA</span></span><br><span class="line">   <span class="comment">// if(tbl-&gt;keyedSize == tbl-&gt;used &amp;&amp; tbl-&gt;arraySize == 0)&#123;</span></span><br><span class="line">   <span class="keyword">if</span> (tbl-&gt;keyedSize != <span class="number">0</span> &amp;&amp; tbl-&gt;keyedSize == tbl-&gt;used &amp;&amp; tbl-&gt;arraySize == <span class="number">0</span>) &#123;</span><br><span class="line">      PrintTable(F, tbl-&gt;reg, <span class="number">0</span>);</span><br><span class="line">      <span class="keyword">if</span> (error)</span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复五"><a href="#修复五" class="headerlink" title="修复五"></a>修复五</h2><p>&emsp;&emsp; <strong>问题5：</strong> 当函数是多值返回结果并且赋值于多个变量时反编译错误，情况如下（lua反汇编）：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">21</span> [-]: GETGLOBAL R0 K9        ; R0 := memoryStatMap</span><br><span class="line"><span class="number">22</span> [-]: GETGLOBAL R1 K9        ; R1 := memoryStatMap</span><br><span class="line"><span class="number">23</span> [-]: GETGLOBAL R2 K2        ; R2 := <span class="built_in">preload</span></span><br><span class="line"><span class="number">24</span> [-]: GETTABLE  R2 R2 K3     ; R2 := R2[<span class="string">"utils"</span>]</span><br><span class="line"><span class="number">25</span> [-]: GETTABLE  R2 R2 K16    ; R2 := R2[<span class="string">"getCocosStat"</span>]</span><br><span class="line"><span class="number">26</span> [-]: CALL      R2 <span class="number">1</span> <span class="number">3</span>       ; R2,R3 := R2()</span><br><span class="line"><span class="number">27</span> [-]: SETTABLE  R1 K15 R3    ; R1[<span class="string">"cocosTextureBytes"</span>] := R3</span><br><span class="line"><span class="number">28</span> [-]: SETTABLE  R0 K14 R2    ; R0[<span class="string">"cocosTextureCnt"</span>] := R2</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;当上面的代码解析到27行时，从寄存器去取R3时报错，原因是前面的call返回多值时，只是在F-&gt;Rcall中进行了标记，没有在寄存器中标记，编译的结果应该为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">memoryStatMap.cocosTextureCnt, memoryStatMap.cocosTextureBytes = preload.utils.getCocosStat()</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; <strong>解决5：</strong> 当reg为空时并且Rcall不为空，增加一个return more的标记，修改2个函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">RegisterOrConstant</span><span class="params">(Function * F, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (IS_CONSTANT(r)) &#123;</span><br><span class="line">      <span class="keyword">return</span> DecompileConstant(F-&gt;f, r - <span class="number">256</span>); <span class="comment">// <span class="doctag">TODO:</span> Lua5.1 specific. Should change to MSR!!!</span></span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">char</span> *copy;</span><br><span class="line">      <span class="keyword">char</span> *reg = GetR(F, r);</span><br><span class="line">      <span class="keyword">if</span> (error)</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// add by littleNA</span></span><br><span class="line">        <span class="comment">// if()&#123;&#125;</span></span><br><span class="line">        <span class="keyword">if</span> (reg == <span class="literal">NULL</span> &amp;&amp; F-&gt;Rcall[r] != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            reg = <span class="string">"return more"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      </span><br><span class="line">      copy = <span class="built_in">malloc</span>(<span class="built_in">strlen</span>(reg) + <span class="number">1</span>);</span><br><span class="line">      <span class="built_in">strcpy</span>(copy, reg);</span><br><span class="line">      <span class="keyword">return</span> copy;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OutputAssignments</span><span class="params">(Function * F)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> i, srcs, size;</span><br><span class="line">   StringBuffer *vars;</span><br><span class="line">   StringBuffer *exps;</span><br><span class="line">   <span class="keyword">if</span> (!SET_IS_EMPTY(F-&gt;tpend))</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">   vars = StringBuffer_new(<span class="literal">NULL</span>);</span><br><span class="line">   exps = StringBuffer_new(<span class="literal">NULL</span>);</span><br><span class="line">   size = SET_CTR(F-&gt;vpend);</span><br><span class="line">   srcs = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">      <span class="keyword">int</span> r = F-&gt;vpend-&gt;regs[i];</span><br><span class="line">      <span class="keyword">if</span> (!(r == <span class="number">-1</span> || PENDING(r))) &#123;</span><br><span class="line">         SET_ERROR(F,<span class="string">"Attempted to generate an assignment, but got confused about usage of registers"</span>);</span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (i &gt; <span class="number">0</span>)</span><br><span class="line">         StringBuffer_prepend(vars, <span class="string">", "</span>);</span><br><span class="line">      StringBuffer_prepend(vars, F-&gt;vpend-&gt;dests[i]);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (F-&gt;vpend-&gt;srcs[i] &amp;&amp; (srcs &gt; <span class="number">0</span> || (srcs == <span class="number">0</span> &amp;&amp; <span class="built_in">strcmp</span>(F-&gt;vpend-&gt;srcs[i], <span class="string">"nil"</span>) != <span class="number">0</span>) || i == size<span class="number">-1</span>)) &#123;</span><br><span class="line">                 <span class="comment">// add by littleNA</span></span><br><span class="line">                 <span class="comment">// if()</span></span><br><span class="line">                 <span class="keyword">if</span> (<span class="built_in">strcmp</span>(F-&gt;vpend-&gt;srcs[i], <span class="string">"return more"</span>) != <span class="number">0</span>)</span><br><span class="line">                 &#123;</span><br><span class="line">                         <span class="keyword">if</span> (srcs &gt; <span class="number">0</span>)</span><br><span class="line">                                StringBuffer_prepend(exps, <span class="string">", "</span>);</span><br><span class="line">                         StringBuffer_prepend(exps, F-&gt;vpend-&gt;srcs[i]);</span><br><span class="line">                         srcs++;</span><br><span class="line">                &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复六"><a href="#修复六" class="headerlink" title="修复六"></a>修复六</h2><p>&emsp;&emsp;<strong>问题6：</strong> 当函数只有一个renturn的时候会反编译错误。</p>
+<p>&emsp;&emsp;<strong>解决6：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">case</span> OP_RETURN:</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// add by littleNA</span></span><br><span class="line">    <span class="comment">// 新增的if</span></span><br><span class="line">    <span class="keyword">if</span> (pc != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (i = a; i &lt; limit; i++) &#123;</span><br><span class="line">                <span class="keyword">char</span>* istr;</span><br><span class="line">                <span class="keyword">if</span> (i &gt; a)</span><br><span class="line">                        StringBuffer_add(str, <span class="string">", "</span>);</span><br><span class="line">                istr = GetR(F, i);</span><br><span class="line">                TRY(StringBuffer_add(str, istr));</span><br><span class="line">        &#125;</span><br><span class="line">        TRY(AddStatement(F, str));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">break</span>;      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复七"><a href="#修复七" class="headerlink" title="修复七"></a>修复七</h2><p>&emsp;&emsp;<strong>问题7：</strong> 部分table初始化会出错。</p>
+<p>&emsp;&emsp;<strong>解决7：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">GetR</span><span class="params">(Function * F, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (IS_TABLE(r)) &#123;</span><br><span class="line">     <span class="comment">// add by littleNA</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"&#123; &#125;"</span>;</span><br><span class="line">    <span class="comment">//  PrintTable(F, r, 0);</span></span><br><span class="line">    <span class="comment">//  if (error) return NULL;</span></span><br><span class="line">   &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复八"><a href="#修复八" class="headerlink" title="修复八"></a>修复八</h2><p>&emsp;&emsp;<strong>问题8：</strong> 可变参数部分解析出错，但是工具反编译时是不报错误的。</p>
+<p>&emsp;&emsp;<strong>解决8：</strong> is_vararg为7时，F-&gt;freeLocal多加了一次：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span> (f-&gt;is_vararg==<span class="number">7</span>) &#123;</span><br><span class="line">   TRY(DeclareVariable(F, <span class="string">"arg"</span>, F-&gt;freeLocal));</span><br><span class="line">   F-&gt;freeLocal++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// add by littleNA</span></span><br><span class="line"><span class="comment">// 修改if为else if</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ((f-&gt;is_vararg&amp;<span class="number">2</span>) &amp;&amp; (functionnum!=<span class="number">0</span>)) &#123;</span><br><span class="line">   F-&gt;freeLocal++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复九"><a href="#修复九" class="headerlink" title="修复九"></a>修复九</h2><p>&emsp;&emsp;<strong>问题9：</strong> 反编译工具输出的中文为url类型的字符（类似 “\230\176\148\231\150\151\230\156\175”），不是中文。</p>
+<p>&emsp;&emsp;<strong>解决9：</strong> 在proto.c文件中的DecompileString函数中，注释掉default 转换字符串的函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">DecompileString</span><span class="params">(<span class="keyword">const</span> Proto * f, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">              <span class="comment">//add by littleNA</span></span><br><span class="line"><span class="comment">//            if (*s &lt; 32 || *s &gt; 127) &#123;</span></span><br><span class="line"><span class="comment">//               char* pos = &amp;(ret[p]);</span></span><br><span class="line"><span class="comment">//               sprintf(pos, "\\%d", *s);</span></span><br><span class="line"><span class="comment">//               p += strlen(pos);</span></span><br><span class="line"><span class="comment">//            &#125; else &#123;</span></span><br><span class="line">               ret[p++] = *s;</span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;然后再下面3处增加判断的约束条件，因为中文字符的话，char字节是负数，这样isalpha和isalnum函数就会出错，所以增加约束条件，小于等于127：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeIndex</span><span class="params">(Function * F, StringBuffer * str, <span class="keyword">char</span>* rstr, <span class="keyword">int</span> self)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">   <span class="keyword">int</span> dot = <span class="number">0</span>;</span><br><span class="line">   <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * see if index can be expressed without quotes</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">if</span> (rstr[<span class="number">0</span>] == <span class="string">'\"'</span>) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// add by littleNA</span></span><br><span class="line">      <span class="comment">// (unsigned char)(rstr[1]) &lt;= 127 &amp;&amp;</span></span><br><span class="line">      <span class="keyword">if</span> ((<span class="keyword">unsigned</span> <span class="keyword">char</span>)(rstr[<span class="number">1</span>]) &lt;= <span class="number">127</span> &amp;&amp; <span class="built_in">isalpha</span>(rstr[<span class="number">1</span>]) || rstr[<span class="number">1</span>] == <span class="string">'_'</span>) &#123;</span><br><span class="line">         <span class="keyword">char</span> *at = rstr + <span class="number">1</span>;</span><br><span class="line">         dot = <span class="number">1</span>;</span><br><span class="line">         <span class="keyword">while</span> (*at != <span class="string">'"'</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// add by littleNA</span></span><br><span class="line">            <span class="comment">// *(unsigned char*)at &lt;= 127 &amp;&amp;</span></span><br><span class="line">            <span class="keyword">if</span> (*(<span class="keyword">unsigned</span> <span class="keyword">char</span>*)at &lt;= <span class="number">127</span> &amp;&amp; !<span class="built_in">isalnum</span>(*at) &amp;&amp; *at != <span class="string">'_'</span>) &#123;</span><br><span class="line">               dot = <span class="number">0</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            at++;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">....</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">    <span class="keyword">case</span> OP_TAILCALL:</span><br><span class="line">    &#123;</span><br><span class="line">               <span class="comment">// add by littleNA</span></span><br><span class="line">               <span class="comment">// (unsigned char)(*at) &lt;= 127 &amp;&amp;</span></span><br><span class="line">               <span class="keyword">while</span> (at &gt; astr &amp;&amp; ((<span class="keyword">unsigned</span> <span class="keyword">char</span>)(*at) &lt;= <span class="number">127</span> &amp;&amp; <span class="built_in">isalpha</span>(*at) || *at == <span class="string">'_'</span>)) &#123;</span><br><span class="line">                  at--;</span><br><span class="line">               &#125;</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="修复十"><a href="#修复十" class="headerlink" title="修复十"></a>修复十</h2><p>&emsp;&emsp;<strong>问题10：</strong> 反汇编失败。因为一些文件中含有很长的字符串，导致sprintf函数调用失败。</p>
+<p>&emsp;&emsp;<strong>解决10：</strong> 增加缓存的大小：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">luaU_disassemble</span><span class="params">(<span class="keyword">const</span> Proto* fwork, <span class="keyword">int</span> dflag, <span class="keyword">int</span> functions, <span class="keyword">char</span>* name)</span> </span>&#123;</span><br><span class="line"> ...</span><br><span class="line">                       <span class="comment">// add by littleNA</span></span><br><span class="line">                       <span class="comment">// char lend[MAXCONSTSIZE+128];</span></span><br><span class="line">                       <span class="keyword">char</span> lend[MAXCONSTSIZE+<span class="number">2048</span>];</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复十一"><a href="#修复十一" class="headerlink" title="修复十一"></a>修复十一</h2><p>&emsp;&emsp;<strong>问题11：</strong> op_setlist操作码当b==0时，反编译失败。</p>
+<p>&emsp;&emsp;<strong>解决11：</strong> 当遇到类似下面的lua语句时，反编译工具会失败，出现的情况在@lib_ui.lua文件中：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> a=&#123;func()&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;汇编后的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">               a   b   c</span><br><span class="line">[<span class="number">1</span>] newtable   <span class="number">0</span>   <span class="number">0</span>   <span class="number">0</span>    ; <span class="built_in">array</span>=<span class="number">0</span>, hash=<span class="number">0</span></span><br><span class="line">[<span class="number">2</span>] getglobal  <span class="number">1</span>   <span class="number">0</span>        ; func</span><br><span class="line">[<span class="number">3</span>] call       <span class="number">1</span>   <span class="number">1</span>   <span class="number">0</span></span><br><span class="line">[<span class="number">4</span>] setlist    <span class="number">0</span>   <span class="number">0</span>   <span class="number">1</span>    ; index <span class="number">1</span> to top</span><br><span class="line">[<span class="number">5</span>] <span class="keyword">return</span>     <span class="number">0</span>   <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;出现的问题有2处，第一个是newtable，当b == 0 &amp;&amp; c == 0时，反编译工具认为table是空的table，直接输出了table并且释放了table的内存，导致后面setlist初始化table时找不到内存而报错。</p>
+<p>&emsp;&emsp;第二个是setlist有问题，当b==0时，其实是指寄存器a+1到栈顶（top）的值全部赋值于table，而反编译器没有对b==0的判断，加上就可以了。所以修改如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StartTable</span><span class="params">(Function * F, <span class="keyword">int</span> r, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   DecTable *tbl = NewTable(r, F, b, c);</span><br><span class="line">   AddToList(&amp;(F-&gt;tables), (ListItem *) tbl);</span><br><span class="line">   F-&gt;Rtabl[r] = <span class="number">1</span>;</span><br><span class="line">   F-&gt;Rtabl[r] = <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">if</span> (b == <span class="number">0</span> &amp;&amp; c == <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// add by littleNA</span></span><br><span class="line">           <span class="comment">// for()&#123;&#125;</span></span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> npc = F-&gt;pc + <span class="number">1</span>; npc &lt; F-&gt;f-&gt;sizecode; npc++)</span><br><span class="line">           &#123;</span><br><span class="line">                  Instruction i = F-&gt;f-&gt;code[npc];</span><br><span class="line">                  OpCode o = GET_OPCODE(i);</span><br><span class="line">                  <span class="keyword">if</span> ((o != OP_SETLIST &amp;&amp; o != OP_SETTABLE) &amp;&amp; r == GETARG_A(i))</span><br><span class="line">                  &#123;</span><br><span class="line">                          PrintTable(F, r, <span class="number">1</span>);</span><br><span class="line">                          <span class="keyword">return</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">else</span> <span class="keyword">if</span> ((o == OP_SETLIST || o == OP_SETTABLE) &amp;&amp; r == GETARG_A(i))</span><br><span class="line">                  &#123;</span><br><span class="line">                          <span class="keyword">return</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">           &#125;</span><br><span class="line">      PrintTable(F, r, <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">if</span> (error)</span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SetList</span><span class="params">(Function * F, <span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">   <span class="comment">// add by littleNA</span></span><br><span class="line">   <span class="comment">// if()&#123;&#125;</span></span><br><span class="line">   <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">   &#123;</span><br><span class="line">           Instruction i = F-&gt;f-&gt;code[F-&gt;pc<span class="number">-1</span>];</span><br><span class="line">           OpCode o = GET_OPCODE(i);</span><br><span class="line">           <span class="keyword">if</span> (o == OP_CALL)</span><br><span class="line">           &#123;</span><br><span class="line">                  <span class="keyword">int</span> aa = GETARG_A(i);</span><br><span class="line">                  <span class="keyword">for</span> (i = a + <span class="number">1</span>; i &lt; aa + <span class="number">1</span>; i++)</span><br><span class="line">                  &#123;</span><br><span class="line">                          <span class="keyword">char</span>* rstr = GetR(F, i);</span><br><span class="line">                          <span class="keyword">if</span> (error)</span><br><span class="line">                                 <span class="keyword">return</span>;</span><br><span class="line">                          AddToTable(F, tbl, rstr, <span class="literal">NULL</span>);</span><br><span class="line">                          <span class="keyword">if</span> (error)</span><br><span class="line">                                 <span class="keyword">return</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">                  <span class="keyword">for</span> (i = <span class="number">1</span>;;i++) &#123;</span><br><span class="line">                          <span class="keyword">char</span>* rstr = GetR(F, a + i);</span><br><span class="line">                          <span class="keyword">if</span> (rstr == <span class="literal">NULL</span>)</span><br><span class="line">                                 <span class="keyword">return</span>;</span><br><span class="line">                          AddToTable(F, tbl, rstr, <span class="literal">NULL</span>);</span><br><span class="line">                          <span class="keyword">if</span> (error)</span><br><span class="line">                                 <span class="keyword">return</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">           &#125;</span><br><span class="line">   &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;StartTable 增加的for循环表示，如果执行了newtable(r 0 0)，后面非初始化table的操作覆盖了r寄存器（把table覆盖了），那就表明new出来的table是空的，后面没有对table的赋值；如果后面有对r寄存器初始化，证明此时new出了的table不是空的，是可变参数的table。</p>
+<p>&emsp;&emsp;SetList 增加的if表示，如果指令是call指令，那么将a+1到call指令寄存器aa的栈元素加入到table中（这里为何不是到栈顶的元素而是到aa的元素呢？因为call指令对应的是函数调用，反编译工具已经把函数调用的字符串解析到aa中了，这里跟实际运行可能有点不一样；else后面就是将a+1到栈顶的元素初始化到table中，直到GetR函数为空表示到栈顶了。</p>
+<h2 id="修复十二"><a href="#修复十二" class="headerlink" title="修复十二"></a>修复十二</h2><p>&emsp;&emsp;<strong>问题12：</strong> 当一个函数开头只是局部变量声明，如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span><span class="params">()</span></span></span><br><span class="line">     <span class="keyword">local</span> a,b,c</span><br><span class="line">     c = f(a,b)</span><br><span class="line">     <span class="keyword">return</span> c</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;第一行 local a,b,c 会反编译失败，导致后面的代码出现各种错误。</p>
+<p>&emsp;&emsp;<strong>解决12：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DeclareLocals</span><span class="params">(Function * F)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">   <span class="keyword">for</span> (i = startparams; i &lt; F-&gt;f-&gt;sizelocvars; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (F-&gt;f-&gt;locvars[i].startpc == F-&gt;pc) &#123;</span><br><span class="line">             ...</span><br><span class="line">             <span class="keyword">if</span> (PENDING(r)) &#123;...&#125;</span><br><span class="line">             <span class="comment">// add by littleNA</span></span><br><span class="line">             <span class="comment">// else if()&#123;&#125;</span></span><br><span class="line">             <span class="keyword">else</span> <span class="keyword">if</span> (locals == <span class="number">0</span> &amp;&amp; F-&gt;pc == <span class="number">0</span>)</span><br><span class="line">             &#123;</span><br><span class="line">                     StringBuffer_add(str, LOCAL(i));</span><br><span class="line">                     <span class="keyword">char</span> *szR = GetR(F, r);</span><br><span class="line">                     StringBuffer_add(rhs, szR==<span class="literal">NULL</span>?<span class="string">"nil"</span>:szR);</span><br><span class="line">             &#125;</span><br><span class="line">             ...   </span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;当变量的startpc 等于 当前pc，变量的个数为0并且当前pc为0，表示第一行声明了变量，添加的else if就是解析这种情况的（原来是直接报错不解析）。</p>
+<p>&emsp;&emsp;（完）</p>
+
+      
+    </div>
+
+    
+
+	
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="littleNA 微信支付"/>
+		<p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="littleNA 支付宝"/>
+		<p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+	<div>    
+	 
+	 
+		<ul class="post-copyright">
+		  <li class="post-copyright-author">
+			  <strong>本文作者：</strong>littleNA
+		  </li>
+		  <li class="post-copyright-link">
+			<strong>本文链接：</strong>
+			<a href="/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/" title="梦幻手游部分Luac反编译失败的解决方法">2018/07/08/梦幻手游部分Luac反编译失败的解决方法/</a>
+		  </li>
+		  <li class="post-copyright-license">
+			<strong>版权声明： </strong>
+			本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议。转载请注明出处！
+		  </li>
+		</ul>
+	  
+	</div>
+	
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/lua/" rel="tag"># lua</a>
+          
+            <a href="/tags/手游安全/" rel="tag"># 手游安全</a>
+          
+            <a href="/tags/luac反编译/" rel="tag"># luac反编译</a>
+          
+            <a href="/tags/梦幻西游手游/" rel="tag"># 梦幻西游手游</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/" rel="next" title="浅析android手游lua脚本的加密与解密（后续）">
+                <i class="fa fa-chevron-left"></i> 浅析android手游lua脚本的加密与解密（后续）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+    
+	<div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="littleNA" />
+            
+              <p class="site-author-name" itemprop="name">littleNA</p>
+              <p class="site-description motion-element" itemprop="description">追求本质，分享知识，授人以渔</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/littlena" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十二处bug修复"><span class="nav-number">2.</span> <span class="nav-text">十二处bug修复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修复一"><span class="nav-number">2.1.</span> <span class="nav-text">修复一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复二"><span class="nav-number">2.2.</span> <span class="nav-text">修复二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复三"><span class="nav-number">2.3.</span> <span class="nav-text">修复三</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复四"><span class="nav-number">2.4.</span> <span class="nav-text">修复四</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复五"><span class="nav-number">2.5.</span> <span class="nav-text">修复五</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复六"><span class="nav-number">2.6.</span> <span class="nav-text">修复六</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复七"><span class="nav-number">2.7.</span> <span class="nav-text">修复七</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复八"><span class="nav-number">2.8.</span> <span class="nav-text">修复八</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复九"><span class="nav-number">2.9.</span> <span class="nav-text">修复九</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复十"><span class="nav-number">2.10.</span> <span class="nav-text">修复十</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复十一"><span class="nav-number">2.11.</span> <span class="nav-text">修复十一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复十二"><span class="nav-number">2.12.</span> <span class="nav-text">修复十二</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">littleNA</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<br>
+<span id="busuanzi_container_site_uv">
+  本站共招待了<span id="busuanzi_value_site_uv"></span>位小伙伴
+</span>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+	  var gitalk = new Gitalk({
+		clientID:  '19afa2c12d8f685a1141', 
+		clientSecret: 'ebbece283c1f2cc7379dd4fcc347f05f02c1f1c5',
+		id: '1531062093000',
+		repo: 'littleNA.github.io', 
+		owner: 'littleNA', 
+		admin: 'littleNA', 
+		distractionFreeMode: 'true',
+	  })
+	  gitalk.render('gitalk-container')
+  </script>
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("f6EeaEQTjb6LttG2GT1uEalX-gzGzoHsz", "SwIgtaEYuUHLoJAUHMMs0aA4");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
