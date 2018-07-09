@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/4.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/5.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/6.png">
-<meta property="og:updated_time" content="2018-07-08T15:53:49.801Z">
+<meta property="og:updated_time" content="2018-07-09T15:03:33.722Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析android手游lua脚本的加密与解密（后续）">
 <meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;趁着周末，把lua的后续文章也写完了。 反编译对抗&amp;emsp;&amp;emsp;众所周知，反汇编/反编译 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 反汇编/反编译 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头">
@@ -406,7 +406,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-08 23:53:49" itemprop="dateModified" datetime="2018-07-08T23:53:49+08:00">23:53:49</time>
+                <time title="修改时间：2018-07-09 23:03:33" itemprop="dateModified" datetime="2018-07-09T23:03:33+08:00">2018-07-09</time>
               
             
           </span>
@@ -469,16 +469,16 @@
 
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;趁着周末，把lua的后续文章也写完了。</p>
-<h1 id="反编译对抗"><a href="#反编译对抗" class="headerlink" title="反编译对抗"></a>反编译对抗</h1><p>&emsp;&emsp;众所周知，<strong>反汇编/反编译</strong> 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 反汇编/反编译 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：</p>
+<h1 id="反编译对抗"><a href="#反编译对抗" class="headerlink" title="反编译对抗"></a>反编译对抗</h1><p>&emsp;&emsp;众所周知，<strong>反汇编/反编译</strong> 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 <strong>反汇编/反编译</strong> 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：</p>
 <ol>
 <li>用调试器调试反编译工具为何解析错误，排查原因。</li>
 <li>用调试器调试原引擎是如何解析文件的。</li>
 <li>用文件格式解析工具解析文件，看哪个点解析出错。</li>
 </ol>
-<p>&emsp;&emsp;下面将以3个例子来实战lua反编译是如何被对抗的。</p>
+<p>&emsp;&emsp;下面将以3个例子来实战lua反编译是如何对抗与修复。</p>
 <a id="more"></a>
 <h1 id="例子1：一个简单的问题"><a href="#例子1：一个简单的问题" class="headerlink" title="例子1：一个简单的问题"></a>例子1：一个简单的问题</h1><p>&emsp;&emsp;这是在看雪论坛看到的一个问题，问题是由于游戏（可能是征途手游）将lua字符串的长度int32修改为int64，导致反编译失败的一个例子，修复方法请看帖子中本人的回答，地址：<a href="https://bbs.pediy.com/thread-217033.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-217033.htm</a> </p>
-<h1 id="例子2：2018-腾讯游戏安全"><a href="#例子2：2018-腾讯游戏安全" class="headerlink" title="例子2：2018 腾讯游戏安全"></a>例子2：2018 腾讯游戏安全</h1><p>&emsp;&emsp;这一节主要是讲一下如何修复当lua的opcode被修改的情况，以及如何修复该题对抗lua反编译的问题。</p>
+<h2 id="例子2：2018腾讯游戏安全竞赛"><a href="#例子2：2018腾讯游戏安全竞赛" class="headerlink" title="例子2：2018腾讯游戏安全竞赛"></a>例子2：2018腾讯游戏安全竞赛</h2><p>&emsp;&emsp;这一节以2018腾讯游戏安全竞赛决赛第二题进阶版第1关的题目为例子，主要是讲一下如何修复当lua的opcode被修改的情况，以及如何修复该题对抗lua反编译的问题。</p>
 <h2 id="opcode问题及其修复"><a href="#opcode问题及其修复" class="headerlink" title="opcode问题及其修复"></a>opcode问题及其修复</h2><p>&emsp;&emsp;修复opcode的目的是 当输入题目的luac文件，反汇编工具Chunkspy和反编译工具luadec能够输出正确的结果。</p>
 <p>&emsp;&emsp;首先，我们在ida中分析lua引擎tmgs.dll文件，然后定位到luaV_execute函数（搜索字符串“ ‘for’ limit must be a number ”），发现switch下的case的参数（lua的opcode）是乱序的，到这里我们就能够确认，该题的lua虚拟机opcode被修改了。</p>
 <p>&emsp;&emsp;接着，我们进行修复操作。一种很耗时的办法就是一个一个opcode还原，分析每一个case下面的代码然后找出对应opcode的顺序。但是这一题我们不用这么麻烦，通过对比分析我们发现普通版的题目并没有修改opcode：</p>
@@ -780,7 +780,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反编译对抗"><span class="nav-number">2.</span> <span class="nav-text">反编译对抗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子1：一个简单的问题"><span class="nav-number">3.</span> <span class="nav-text">例子1：一个简单的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子2：2018-腾讯游戏安全"><span class="nav-number">4.</span> <span class="nav-text">例子2：2018 腾讯游戏安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#opcode问题及其修复"><span class="nav-number">4.1.</span> <span class="nav-text">opcode问题及其修复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反编译问题及其修复"><span class="nav-number">4.2.</span> <span class="nav-text">反编译问题及其修复</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子3：梦幻西游手游"><span class="nav-number">5.</span> <span class="nav-text">例子3：梦幻西游手游</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反编译对抗"><span class="nav-number">2.</span> <span class="nav-text">反编译对抗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子1：一个简单的问题"><span class="nav-number">3.</span> <span class="nav-text">例子1：一个简单的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#例子2：2018腾讯游戏安全竞赛"><span class="nav-number">3.1.</span> <span class="nav-text">例子2：2018腾讯游戏安全竞赛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opcode问题及其修复"><span class="nav-number">3.2.</span> <span class="nav-text">opcode问题及其修复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反编译问题及其修复"><span class="nav-number">3.3.</span> <span class="nav-text">反编译问题及其修复</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子3：梦幻西游手游"><span class="nav-number">4.</span> <span class="nav-text">例子3：梦幻西游手游</span></a></li></ol></div>
             
 
           </div>

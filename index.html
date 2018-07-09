@@ -598,7 +598,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-08 23:53:49" itemprop="dateModified" datetime="2018-07-08T23:53:49+08:00">23:53:49</time>
+                <time title="修改时间：2018-07-09 23:03:33" itemprop="dateModified" datetime="2018-07-09T23:03:33+08:00">2018-07-09</time>
               
             
           </span>
@@ -662,13 +662,13 @@
       
         
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;趁着周末，把lua的后续文章也写完了。</p>
-<h1 id="反编译对抗"><a href="#反编译对抗" class="headerlink" title="反编译对抗"></a>反编译对抗</h1><p>&emsp;&emsp;众所周知，<strong>反汇编/反编译</strong> 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 反汇编/反编译 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：</p>
+<h1 id="反编译对抗"><a href="#反编译对抗" class="headerlink" title="反编译对抗"></a>反编译对抗</h1><p>&emsp;&emsp;众所周知，<strong>反汇编/反编译</strong> 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 <strong>反汇编/反编译</strong> 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：</p>
 <ol>
 <li>用调试器调试反编译工具为何解析错误，排查原因。</li>
 <li>用调试器调试原引擎是如何解析文件的。</li>
 <li>用文件格式解析工具解析文件，看哪个点解析出错。</li>
 </ol>
-<p>&emsp;&emsp;下面将以3个例子来实战lua反编译是如何被对抗的。</p>
+<p>&emsp;&emsp;下面将以3个例子来实战lua反编译是如何对抗与修复。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/#more" rel="contents">
