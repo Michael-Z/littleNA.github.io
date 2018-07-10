@@ -116,12 +116,14 @@
 <meta property="og:site_name" content="littleNA&#39;s blog">
 <meta property="og:description" content="前言&amp;emsp;&amp;emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》[19]，建议结合搜索引擎学习之。 &amp;emsp;&amp;emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-07T11:18:52.805Z">
+<meta property="og:updated_time" content="2018-07-10T10:55:15.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析android手游lua脚本的加密与解密（前传）">
 <meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》[19]，建议结合搜索引擎学习之。 &amp;emsp;&amp;emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。">
 
 
+
+  <link rel="alternate" href="/atom.xml" title="littleNA's blog" type="application/atom+xml" />
 
 
 
@@ -399,7 +401,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-07 19:18:52" itemprop="dateModified" datetime="2018-07-07T19:18:52+08:00">19:18:52</time>
+                <time title="修改时间：2018-07-10 18:55:15" itemprop="dateModified" datetime="2018-07-10T18:55:15+08:00">2018-07-10</time>
               
             
           </span>
@@ -476,16 +478,16 @@
 <h1 id="工具介绍："><a href="#工具介绍：" class="headerlink" title="工具介绍："></a>工具介绍：</h1><p>&emsp;&emsp;逆向解密lua和luajit游戏都有相关的工具，这一节将对一些主流的工具进行介绍。</p>
 <p><strong>1. lua相关：</strong></p>
 <ul>
-<li><p>luadec <a href="#16">[16]</a>：这是一个用c语言结合lua引擎源码写的开源lua反编译器，解析整个lua字节码文件并尽可能的还原为源码。当然，由于还原的是高级语言，所以兼容性一般，当反编译大量文件时肯定会遇到bug，这时就需要自己手动修复bug；并且很容易被针对造成反编译失败。目前支持的版本有lua5.1、，5.2和5.3。</p>
+<li><p>luadec <a href="#16">[16]</a>：这是一个用c语言结合lua引擎源码写的开源lua反编译器，解析整个lua字节码文件并尽可能的还原为源码。当然，由于还原的是高级语言，所以兼容性一般，当反编译大量文件时肯定会遇到bug，这时就需要自己手动修复bug；并且很容易被针对造成反编译失败。目前支持的版本有lua5.1，5.2和5.3。</p>
 </li>
-<li><p>chunkspy：一款非常有用的lua分析工具，本身就是lua语言所写。它解析了整个lua字节文件，由于其输出的是lua的汇编形式，所以兼容性非常高，也造成了一定的阅读障碍。chunklua 不仅可以解析luac文件，它还包括了一个交互式的命令，可以将输入的lua脚本转换成lua字节码汇编的形式，这对学习lua字节码非常有帮助。luadec工具中集成了这个脚本，目前支持的版本也是有lua5.1，5.2和5.3。</p>
+<li><p>chunkspy：一款非常有用的lua分析工具，本身就是lua语言所写。它解析了整个lua字节文件，由于其输出的是lua的汇编形式，所以兼容性非常高，也造成了一定的阅读障碍。chunkspy 不仅可以解析luac文件，它还包括了一个交互式的命令，可以将输入的lua脚本转换成lua字节码汇编的形式，这对学习lua字节码非常有帮助。luadec工具中集成了这个脚本，目前支持的版本也是有lua5.1，5.2和5.3。</p>
 </li>
 <li><p>unluac：这也是一个开源的lua反编译器，java语言所写，相比luadec 工具兼容性更低,。一般很少使用，只支持lua5.1，当上面工具都失效时可以尝试。</p>
 </li>
 </ul>
 <p><strong>2. luajit相关：</strong></p>
 <ul>
-<li><p>luajit-decomp<a href="#17">[17]</a>：github开源的一款luajit反编译工具，使用au3语言编写。先通过luajit原生的exe文件将luajit字节码文件转换成汇编，然后该工具再将luajit汇编转换成lua语言。由于反汇编后的luajit字节码缺少很多信息，如变量名、函数名等，造成反编译后的结果读起来比较隐晦，类似于ida的F5。但是兼容性超好，只要能够反汇编就能够反编译，所以需要找到待反编译的luajit文件对于的luajit引擎的版本。目前是支持所有的luajit版本。</p>
+<li><p>luajit-decomp<a href="#17">[17]</a>：github开源的一款luajit反编译工具，使用au3语言编写。先通过luajit原生的exe文件将luajit字节码文件转换成汇编，然后该工具再将luajit汇编转换成lua语言。由于反汇编后的luajit字节码缺少很多信息，如变量名、函数名等，造成反编译后的结果读起来比较隐晦，类似于ida的F5。但是兼容性超好，只要能够反汇编就能够反编译，所以使用时需要替换对应版本的luajit引擎（满足反汇编的需求）。目前是支持所有的luajit版本。</p>
 </li>
 <li><p>ljd<a href="#18">[18]</a>：也是github开源的一款luajit反编译工具，使用python编写，与luajit-decomp 反编译luajit汇编的方式不同，其从头解析了整个luajit文件，能够获取更多的信息，还原的程度更高，但是由于精度更高，所以兼容性也会弱一点。查看该项目的fork可以获取更多的其他兼容版本，目前支持的版本有luajit2.0、luajit2.1等。</p>
 </li>
@@ -736,6 +738,13 @@
             </nav>
           
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           

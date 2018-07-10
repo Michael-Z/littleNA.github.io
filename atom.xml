@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>littleNA&#39;s blog</title>
+  
+  <subtitle>逆向世界</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2018-07-08T15:49:26.504Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>littleNA</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>梦幻手游部分Luac反编译失败的解决方法</title>
+    <link href="http://yoursite.com/2018/07/08/%E6%A2%A6%E5%B9%BB%E6%89%8B%E6%B8%B8%E9%83%A8%E5%88%86Luac%E5%8F%8D%E7%BC%96%E8%AF%91%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/</id>
+    <published>2018-07-08T15:01:33.000Z</published>
+    <updated>2018-07-08T15:49:26.504Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;这一篇是去年学习破解梦幻西游手游lua代码时记录的一些问题，今天将其整理并共享出来，所以不一定适合现在版本的梦幻手游，大家还是以参考为目的呗。lua相关的文章（共4篇）到此也写完了，如果以后还有新的东西会继续更新，接下来会写几篇关于2018 腾讯游戏安全竞赛的详细分析，敬请期待。&lt;/p&gt;
+&lt;h1 id=&quot;十二处bug修复&quot;&gt;&lt;a href=&quot;#十二处bug修复&quot; class=&quot;headerlink&quot; title=&quot;十二处bug修复&quot;&gt;&lt;/a&gt;十二处bug修复&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;当时反编译梦幻西游手游时遇到的问题大约有12个，修改完基本上可以完美复现lua源码，这里用的luadec5.1版本。&lt;/p&gt;
+&lt;h2 id=&quot;修复一&quot;&gt;&lt;a href=&quot;#修复一&quot; class=&quot;headerlink&quot; title=&quot;修复一&quot;&gt;&lt;/a&gt;修复一&lt;/h2&gt;&lt;p&gt;&amp;emsp;&amp;emsp;&lt;strong&gt;问题1：&lt;/strong&gt; 由于梦幻手游lua的opcode是被修改过的，之前的解决方案是找到梦幻的opcode，替换掉反编译工具的原opcode，并且修改opmode，再进行反编译。问题是部分测试的结果是可以的，但是当对整个手游的luac字节码反编译时，会出现各种错误，原因是luadec5.1 在很多地方都默认了opcode的顺序，并进行了特殊处理，所以需要找到这些特殊处理的地方一一修改。不过这样很麻烦，从而想到另外一种方式，不修改原来的opcode和opmode，而是在luadec解析到字节码的时候，将opcode还原成原来的opcode。&lt;/p&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;&lt;strong&gt;解决1：&lt;/strong&gt; 定位到解析code的位置在  lundump.c –&amp;gt; LoadFunction –&amp;gt; LoadCode （位置不唯一，可以看上一篇腾讯比赛的修复），当执行完LoadCode函数的时候，f变量则指向了code的结构，在这之后执行自己写的函数ConvertCode函数，如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight c++&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// add by littleNA&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ConvertCode&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Proto *f)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; pnOpTbl[] = &amp;#123; &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;18&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;36&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;27&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;34&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;32&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;30&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;31&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;9&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;26&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;24&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;28&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;17&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;33&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;19&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;35&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;21&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;22&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;23&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;37&lt;/span&gt; &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; pc = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; pc &amp;lt; f-&amp;gt;sizecode; pc++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               Instruction i = f-&amp;gt;code[pc];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               OpCode o = GET_OPCODE(i);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               SET_OPCODE(i, pnOpTbl[o]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               f-&amp;gt;code[pc] = i;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="lua加解密" scheme="http://yoursite.com/categories/lua%E5%8A%A0%E8%A7%A3%E5%AF%86/"/>
+    
+    
+      <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="luac反编译" scheme="http://yoursite.com/tags/luac%E5%8F%8D%E7%BC%96%E8%AF%91/"/>
+    
+      <category term="梦幻西游手游" scheme="http://yoursite.com/tags/%E6%A2%A6%E5%B9%BB%E8%A5%BF%E6%B8%B8%E6%89%8B%E6%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浅析android手游lua脚本的加密与解密（后续）</title>
+    <link href="http://yoursite.com/2018/07/08/%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86%EF%BC%88%E5%90%8E%E7%BB%AD%EF%BC%89/"/>
+    <id>http://yoursite.com/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/</id>
+    <published>2018-07-08T14:15:44.000Z</published>
+    <updated>2018-07-09T15:03:33.722Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;趁着周末，把lua的后续文章也写完了。&lt;/p&gt;
+&lt;h1 id=&quot;反编译对抗&quot;&gt;&lt;a href=&quot;#反编译对抗&quot; class=&quot;headerlink&quot; title=&quot;反编译对抗&quot;&gt;&lt;/a&gt;反编译对抗&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;众所周知，&lt;strong&gt;反汇编/反编译&lt;/strong&gt; 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 &lt;strong&gt;反汇编/反编译&lt;/strong&gt; 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;用调试器调试反编译工具为何解析错误，排查原因。&lt;/li&gt;
+&lt;li&gt;用调试器调试原引擎是如何解析文件的。&lt;/li&gt;
+&lt;li&gt;用文件格式解析工具解析文件，看哪个点解析出错。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;下面将以3个例子来实战lua反编译是如何对抗与修复。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="lua加解密" scheme="http://yoursite.com/categories/lua%E5%8A%A0%E8%A7%A3%E5%AF%86/"/>
+    
+    
+      <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
+    
+      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浅析android手游lua脚本的加密与解密（前传）</title>
+    <link href="http://yoursite.com/2018/07/07/%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86%EF%BC%88%E5%89%8D%E4%BC%A0%EF%BC%89/"/>
+    <id>http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/</id>
+    <published>2018-07-07T10:37:04.000Z</published>
+    <updated>2018-07-10T10:55:15.804Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》&lt;a href=&quot;#19&quot;&gt;[19]&lt;/a&gt;，建议结合搜索引擎学习之。&lt;/p&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="lua加解密" scheme="http://yoursite.com/categories/lua%E5%8A%A0%E8%A7%A3%E5%AF%86/"/>
+    
+    
+      <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
+    
+      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浅析android手游lua脚本的加密与解密</title>
+    <link href="http://yoursite.com/2018/07/07/%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86/"/>
+    <id>http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/</id>
+    <published>2018-07-07T08:01:12.000Z</published>
+    <updated>2018-07-08T15:56:24.678Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;博客刚刚弄完善，把去年发在看雪的一篇精华帖转了过来，文章稍微修改了下，并且增加了后续&lt;a href=&quot;https://litna.top/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;文章&lt;/a&gt;，希望能够吸引点人气。这篇文章是我在学习android手游安全时总结的一篇关于lua的文章，不足之处欢迎指正，也欢迎各位大佬前来交流。&lt;/p&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;主要用到的工具和环境：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;win7系统&lt;/li&gt;
+&lt;li&gt;cocos2d-x 开发环境&lt;/li&gt;
+&lt;li&gt;IDA6.8&lt;/li&gt;
+&lt;li&gt;vs2015&lt;/li&gt;
+&lt;li&gt;AndroidKiller 1.3.1&lt;/li&gt;
+&lt;li&gt;luadec51&lt;/li&gt;
+&lt;li&gt;luajit-decomp&lt;br&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="lua加解密" scheme="http://yoursite.com/categories/lua%E5%8A%A0%E8%A7%A3%E5%AF%86/"/>
+    
+    
+      <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
+    
+      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+</feed>
