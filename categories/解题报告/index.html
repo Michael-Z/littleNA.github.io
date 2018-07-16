@@ -108,18 +108,17 @@
 
 
 
-  <meta name="description" content="前言&amp;emsp;&amp;emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》[19]，建议结合搜索引擎学习之。 &amp;emsp;&amp;emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。">
-<meta name="keywords" content="lua,手游安全,luajit">
-<meta property="og:type" content="article">
-<meta property="og:title" content="浅析android手游lua脚本的加密与解密（前传）">
-<meta property="og:url" content="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/index.html">
+  <meta name="description" content="追求本质，分享知识，授人以渔">
+<meta name="keywords" content="逆向工程，windows逆向分析，手游安全，ctf">
+<meta property="og:type" content="website">
+<meta property="og:title" content="littleNA&#39;s blog">
+<meta property="og:url" content="http://yoursite.com/categories/解题报告/index.html">
 <meta property="og:site_name" content="littleNA&#39;s blog">
-<meta property="og:description" content="前言&amp;emsp;&amp;emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》[19]，建议结合搜索引擎学习之。 &amp;emsp;&amp;emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。">
+<meta property="og:description" content="追求本质，分享知识，授人以渔">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-10T10:55:15.804Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅析android手游lua脚本的加密与解密（前传）">
-<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》[19]，建议结合搜索引擎学习之。 &amp;emsp;&amp;emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。">
+<meta name="twitter:title" content="littleNA&#39;s blog">
+<meta name="twitter:description" content="追求本质，分享知识，授人以渔">
 
 
 
@@ -128,7 +127,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/"/>
+  <link rel="canonical" href="http://yoursite.com/categories/解题报告/"/>
 
 
 
@@ -138,7 +137,7 @@
   };
 </script>
 
-  <title>浅析android手游lua脚本的加密与解密（前传） | littleNA's blog</title>
+  <title>分类: 解题报告 | littleNA's blog</title>
   
 
 
@@ -185,7 +184,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -242,7 +241,7 @@
         
         
           
-          <li class="menu-item menu-item-categories">
+          <li class="menu-item menu-item-categories menu-item-active">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
   </li>
@@ -322,327 +321,85 @@
           
             
 
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
           
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block category">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>解题报告<small>分类</small>
+        </h1>
+      </div>
 
-  
-  
-  
-
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="littleNA">
-      <meta itemprop="description" content="追求本质，分享知识，授人以渔">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="littleNA's blog">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/" itemprop="url">
+              
+                <span itemprop="name">2018看雪·京东AI CTF大挑战特别题 writeup</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">浅析android手游lua脚本的加密与解密（前传）
-              
-            
-          </h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-07 18:37:04" itemprop="dateCreated datePublished" datetime="2018-07-07T18:37:04+08:00">2018-07-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-10 18:55:15" itemprop="dateModified" datetime="2018-07-10T18:55:15+08:00">2018-07-10</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/lua加解密/" itemprop="url" rel="index"><span itemprop="name">lua加解密</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/" class="leancloud_visitors" data-flag-title="浅析android手游lua脚本的加密与解密（前传）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;为了能让一些同学更好的学习lua的逆向，我把收集的一些资料组合成一篇lua加解密的相关工作给大家参考，当然，看这篇文章之前还是需要一些lua的基础知识，这里推荐云风大佬的《Lua源码欣赏》<a href="#19">[19]</a>，建议结合搜索引擎学习之。</p>
-<p>&emsp;&emsp;文章分2部分介绍，第1部分介绍lua加解密的相关文章介绍，第2部分介绍lua的相关工具。</p>
-<a id="more"></a>
-<h1 id="相关工作："><a href="#相关工作：" class="headerlink" title="相关工作："></a>相关工作：</h1><p>&emsp;&emsp;这一节介绍了互联网上对lua的各种相关文章，包括lua的加解密如文件格式的解析、基于lua的游戏和比赛的介绍、lua的hook技术等。</p>
-<p><strong>1. lua加解密入门：</strong></p>
-<p>&emsp;&emsp;非虫大佬<a href="#1-4">[1-4]</a> 写了4篇关于luac和luajit文件格式和字节码的相关文章，并开源了010Editor的解析luac和luajit的模板代码。Ganlv 同学<a href="#7">[7]</a> 在吾爱破解写了7篇关于lua加解密的系列教程。<br>腾讯gslab<a href="#9">[9]</a> 写了一篇关于lua游戏逆向的入门介绍，这是一篇比较早的lua游戏解密的文章。INightElf 同学<a href="#10">[10]</a> 写了一篇关于lua脚本反编译入门的文章。</p>
-<p><strong>2. 基于lua的手游：</strong></p>
-<p>&emsp;&emsp;lua不仅能用于端游戏，也能用于手游，而且由于手游的火热，带动了lua逆向相关分析文章的分享。wmsuper 同学<a href="#11">[11]</a> 在android平台下解密了腾讯游戏开心消消乐的lua脚本，后续可以通过修改lua脚本达到作弊的目的。Unity 同学<a href="#8">[8]</a> 通过hook的方法解密和修改lua手游《放置江湖》的流程，达到修改游戏奖励的目的。littleNA 同学<a href="#12">[12]</a> 通过3种方式解密了3个手游的lua脚本，并且修复了梦幻手游lua opcode的顺序。</p>
-<p><strong>3. 基于lua的比赛：</strong></p>
-<p>&emsp;&emsp;随着国内CTF的发展，lua技术也运用到了比赛中。看雪ctf2016第2题<a href="#13">[13]</a>、2017第15题<a href="#14">[14]</a>和腾讯游戏安全2018决赛第2题<a href="#15">[15]</a>都使用了lua引擎作为载体的CrackMe比赛，其中看雪2016将算法验证用lua代码实现并编译成luac，最后还修改了luac的文件头，使得反编译工具报错；看雪2017的题使用壳和大量的混淆，最后一步是luajit的简单异或运算；腾讯2018使用的lua技术更加深入，进阶版更是修改了lua的opcode顺序，并使用lua编写了一个虚拟机。以上3题的writeup网上都可以搜索到，有兴趣的朋友可以练练手，加深印象。</p>
-<p><strong>4. lua hooking：</strong></p>
-<p>&emsp;&emsp;Hook是修改软件流程的常用手段，lua中也存在hook技术。曾半仙 同学<a href="#9">[9]</a> 在看雪发布了一种通过hook lua字节码达到修改游戏逻辑的方法，并发布了一个lua汇编引擎。Nikc Cano<a href="#5">[5]</a> 的blog写了一篇关于Hooking luajit的文章，興趣使然的小胃 同学<a href="#6">[6]</a> 对该篇文章进行了翻译。</p>
-<h1 id="工具介绍："><a href="#工具介绍：" class="headerlink" title="工具介绍："></a>工具介绍：</h1><p>&emsp;&emsp;逆向解密lua和luajit游戏都有相关的工具，这一节将对一些主流的工具进行介绍。</p>
-<p><strong>1. lua相关：</strong></p>
-<ul>
-<li><p>luadec <a href="#16">[16]</a>：这是一个用c语言结合lua引擎源码写的开源lua反编译器，解析整个lua字节码文件并尽可能的还原为源码。当然，由于还原的是高级语言，所以兼容性一般，当反编译大量文件时肯定会遇到bug，这时就需要自己手动修复bug；并且很容易被针对造成反编译失败。目前支持的版本有lua5.1，5.2和5.3。</p>
-</li>
-<li><p>chunkspy：一款非常有用的lua分析工具，本身就是lua语言所写。它解析了整个lua字节文件，由于其输出的是lua的汇编形式，所以兼容性非常高，也造成了一定的阅读障碍。chunkspy 不仅可以解析luac文件，它还包括了一个交互式的命令，可以将输入的lua脚本转换成lua字节码汇编的形式，这对学习lua字节码非常有帮助。luadec工具中集成了这个脚本，目前支持的版本也是有lua5.1，5.2和5.3。</p>
-</li>
-<li><p>unluac：这也是一个开源的lua反编译器，java语言所写，相比luadec 工具兼容性更低,。一般很少使用，只支持lua5.1，当上面工具都失效时可以尝试。</p>
-</li>
-</ul>
-<p><strong>2. luajit相关：</strong></p>
-<ul>
-<li><p>luajit-decomp<a href="#17">[17]</a>：github开源的一款luajit反编译工具，使用au3语言编写。先通过luajit原生的exe文件将luajit字节码文件转换成汇编，然后该工具再将luajit汇编转换成lua语言。由于反汇编后的luajit字节码缺少很多信息，如变量名、函数名等，造成反编译后的结果读起来比较隐晦，类似于ida的F5。但是兼容性超好，只要能够反汇编就能够反编译，所以使用时需要替换对应版本的luajit引擎（满足反汇编的需求）。目前是支持所有的luajit版本。</p>
-</li>
-<li><p>ljd<a href="#18">[18]</a>：也是github开源的一款luajit反编译工具，使用python编写，与luajit-decomp 反编译luajit汇编的方式不同，其从头解析了整个luajit文件，能够获取更多的信息，还原的程度更高，但是由于精度更高，所以兼容性也会弱一点。查看该项目的fork可以获取更多的其他兼容版本，目前支持的版本有luajit2.0、luajit2.1等。</p>
-</li>
-</ul>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><div id="1-4"></div></p>
-<ul>
-<li>[1] 飞虫 《Lua程序逆向之Luac文件格式分析》 <a href="https://www.anquanke.com/post/id/87006" target="_blank" rel="noopener">https://www.anquanke.com/post/id/87006</a></li>
-<li>[2] 飞虫 《Lua程序逆向之Luac字节码与反汇编》 <a href="https://www.anquanke.com/post/id/87262" target="_blank" rel="noopener">https://www.anquanke.com/post/id/87262</a></li>
-<li>[3] 飞虫 《Lua程序逆向之Luajit文件格式》 <a href="https://www.anquanke.com/post/id/87281" target="_blank" rel="noopener">https://www.anquanke.com/post/id/87281</a></li>
-<li>[4] 飞虫 《Lua程序逆向之Luajit字节码与反汇编》 <a href="https://www.anquanke.com/post/id/90241" target="_blank" rel="noopener">https://www.anquanke.com/post/id/90241</a><div id="5"></div></li>
-<li>[5] Nick Cano 《Hooking LuaJIT》 <a href="https://nickcano.com/hooking-luajit" target="_blank" rel="noopener">https://nickcano.com/hooking-luajit</a><div id="6"></div></li>
-<li>[6] 興趣使然的小胃 《看我如何通过hook攻击LuaJIT》 <a href="https://www.anquanke.com/post/id/86958" target="_blank" rel="noopener">https://www.anquanke.com/post/id/86958</a><div id="7"></div></li>
-<li>[7] Ganlv 《lua脚本解密1：loadstring》 <a href="https://www.52pojie.cn/thread-694364-1-1.html" target="_blank" rel="noopener">https://www.52pojie.cn/thread-694364-1-1.html</a> <div id="8"></div></li>
-<li>[8] unity 《【放置江湖】LUA手游 基于HOOK 解密修改流程》 <a href="https://www.52pojie.cn/thread-682778-1-1.html" target="_blank" rel="noopener">https://www.52pojie.cn/thread-682778-1-1.html</a><div id="9"></div></li>
-<li>[9] 游戏安全实验室 《Lua游戏逆向及破解方法介绍》 <a href="http://gslab.qq.com/portal.php?mod=view&amp;aid=173" target="_blank" rel="noopener">http://gslab.qq.com/portal.php?mod=view&amp;aid=173</a><div id="10"></div></li>
-<li>[10] INightElf 《[原创]Lua脚本反编译入门之一》 <a href="https://bbs.pediy.com/thread-186530.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-186530.htm</a><div id="11"></div></li>
-<li>[11] wmsuper 《开心消消乐lua脚本解密》 <a href="https://www.52pojie.cn/thread-611248-1-1.html" target="_blank" rel="noopener">https://www.52pojie.cn/thread-611248-1-1.html</a><div id="12"></div></li>
-<li>[12] littleNA 《浅析android手游lua脚本的加密与解密》 <a href="https://bbs.pediy.com/thread-216969.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-216969.htm</a><div id="13"></div></li>
-<li>[13] 《看雪 2016CrackMe 第二题》 <a href="https://ctf.pediy.com/game-fight-3.htm" target="_blank" rel="noopener">https://ctf.pediy.com/game-fight-3.htm</a><div id="14"></div></li>
-<li>[14] 《看雪 2017CrackMe 第十五题》 <a href="https://ctf.pediy.com/game-fight-45.htm" target="_blank" rel="noopener">https://ctf.pediy.com/game-fight-45.htm</a><div id="15"></div></li>
-<li>[15] 《腾讯游戏安全技术竞赛》 <a href="https://www.52pojie.cn/forum-77-1.html" target="_blank" rel="noopener">https://www.52pojie.cn/forum-77-1.html</a><div id="16"></div></li>
-<li>[16] luadec <a href="https://github.com/viruscamp/luadec" target="_blank" rel="noopener">https://github.com/viruscamp/luadec</a><div id="17"></div></li>
-<li>[17] ljd <a href="https://github.com/NightNord/ljd" target="_blank" rel="noopener">https://github.com/NightNord/ljd</a><div id="18"></div></li>
-<li>[18] luajit-decomp <a href="https://github.com/bobsayshilol/luajit-decomp" target="_blank" rel="noopener">https://github.com/bobsayshilol/luajit-decomp</a><div id="19"></div></li>
-<li>[19] 云风 《Lua源码欣赏》 <a href="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf" target="_blank" rel="noopener">https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/luadec/云风-lua源码欣赏-lua-5.2.pdf</a></li>
-</ul>
-
-      
-    </div>
-
-    
-
-	
-    
-    
-    
-
-    
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="littleNA 微信支付"/>
-		<p>微信支付</p>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-07-16T20:10:52+08:00"
+              content="2018-07-16" >
+          07-16
+        </time>
       </div>
-    
 
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.jpg" alt="littleNA 支付宝"/>
-		<p>支付宝</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-	<div>    
-	 
-	 
-		<ul class="post-copyright">
-		  <li class="post-copyright-author">
-			  <strong>本文作者：</strong>littleNA
-		  </li>
-		  <li class="post-copyright-link">
-			<strong>本文链接：</strong>
-			<a href="/2018/07/07/浅析android手游lua脚本的加密与解密（前传）/" title="浅析android手游lua脚本的加密与解密（前传）">2018/07/07/浅析android手游lua脚本的加密与解密（前传）/</a>
-		  </li>
-		  <li class="post-copyright-license">
-			<strong>版权声明： </strong>
-			本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议。转载请注明出处！
-		  </li>
-		</ul>
-	  
-	</div>
-	
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/lua/" rel="tag"># lua</a>
-          
-            <a href="/tags/手游安全/" rel="tag"># 手游安全</a>
-          
-            <a href="/tags/luajit/" rel="tag"># luajit</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/07/07/浅析android手游lua脚本的加密与解密/" rel="next" title="浅析android手游lua脚本的加密与解密">
-                <i class="fa fa-chevron-left"></i> 浅析android手游lua脚本的加密与解密
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/08/浅析android手游lua脚本的加密与解密（后续）/" rel="prev" title="浅析android手游lua脚本的加密与解密（后续）">
-                浅析android手游lua脚本的加密与解密（后续） <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
           
-
-    
-	<div id="gitalk-container"></div>
-  
-
-
 
         </div>
         
@@ -663,17 +420,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -782,22 +530,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工作："><span class="nav-number">2.</span> <span class="nav-text">相关工作：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工具介绍："><span class="nav-number">3.</span> <span class="nav-text">工具介绍：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文章"><span class="nav-number">4.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -936,10 +668,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
-
-
 
   
 
@@ -974,21 +702,6 @@
 
 
 
-    
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-  <script type="text/javascript">
-	  var gitalk = new Gitalk({
-		clientID:  '19afa2c12d8f685a1141', 
-		clientSecret: 'ebbece283c1f2cc7379dd4fcc347f05f02c1f1c5',
-		id: '1530959824000',
-		repo: 'littleNA.github.io', 
-		owner: 'littleNA', 
-		admin: 'littleNA', 
-		distractionFreeMode: 'true',
-	  })
-	  gitalk.render('gitalk-container')
-  </script>
 
 
 

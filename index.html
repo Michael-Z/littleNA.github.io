@@ -342,6 +342,203 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="littleNA">
+      <meta itemprop="description" content="追求本质，分享知识，授人以渔">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="littleNA's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/" itemprop="url">
+                  2018看雪·京东AI CTF大挑战特别题 writeup
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-16 20:10:52" itemprop="dateCreated datePublished" datetime="2018-07-16T20:10:52+08:00">2018-07-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-16 20:32:24" itemprop="dateModified" datetime="2018-07-16T20:32:24+08:00">20:32:24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/解题报告/" itemprop="url" rel="index"><span itemprop="name">解题报告</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/" class="leancloud_visitors" data-flag-title="2018看雪·京东AI CTF大挑战特别题 writeup">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>&emsp;&emsp;非常荣幸，这次AI与CTF结合的比赛本人获得了第二名（估计很多大佬懒得做，都跑去打常规赛了）。这一篇文章是本人发在看雪的解题报告，现转载到个人博客。原地址 <a href="https://bbs.pediy.com/thread-229564.htm" target="_blank" rel="noopener">请点击这里</a></p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;前不久自己也思考过能不能将热门的AI技术与CTF比赛结合起来，没想到就意外发现了这道题，感觉非常有趣。</p>
+<h1 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h1><p>&emsp;&emsp;首先，阅读题目，发现模型是使用深度学习来检测一段二进制代码中是否存在函数入口，存在的话将入口点标为1，否则为0。而题目需要我们对模型机进行微调，使得模型能够识别出一段不能识别的二进制代码的入口点。说白就是我们需要造一些样本，重新训练模型使得模型能够识别给定样本的函数入口点并保证不是入口点也能识别正确。题目提供了模型的文件和样本点2个数据。</p>
+<p>&emsp;&emsp;接着，我们需要看看模型是使用什么框架生成的，查看模型文件的二进制代码，发现是hdf文件：</p>
+<img src="/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/1.png">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+	
+    
+    
+    
+
+    
+
+    
+
+	<div>    
+	 
+	 
+	</div>
+	
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/梦幻手游部分Luac反编译失败的解决方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1162,7 +1359,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1177,7 +1374,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">1</span>
+                      
+                    
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1200,7 +1399,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
