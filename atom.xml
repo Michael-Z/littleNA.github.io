@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-16T12:36:06.558Z</updated>
+  <updated>2018-07-16T12:41:48.647Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,16 +21,16 @@
     <link href="http://yoursite.com/2018/07/16/2018%E7%9C%8B%E9%9B%AA%C2%B7%E4%BA%AC%E4%B8%9CAI-CTF%E5%A4%A7%E6%8C%91%E6%88%98%E7%89%B9%E5%88%AB%E9%A2%98-writeup/"/>
     <id>http://yoursite.com/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/</id>
     <published>2018-07-16T12:10:52.000Z</published>
-    <updated>2018-07-16T12:36:06.558Z</updated>
+    <updated>2018-07-16T12:41:48.647Z</updated>
     
     <summary type="html">
     
       &lt;blockquote&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;非常荣幸，这次AI与CTF结合的比赛本人获得了第二名（估计很多大佬懒得做，都跑去打常规赛了）。这一篇文章是本人发在看雪的解题报告，现转载到个人博客。原地址 &lt;a href=&quot;https://bbs.pediy.com/thread-229564.htm&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;请点击这里&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;前不久自己也思考过能不能将热门的AI技术与CTF比赛结合起来，没想到就意外发现了这道题，感觉非常有趣�?&lt;/p&gt;
-&lt;h1 id=&quot;题目解析&quot;&gt;&lt;a href=&quot;#题目解析&quot; class=&quot;headerlink&quot; title=&quot;题目解析&quot;&gt;&lt;/a&gt;题目解析&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;首先，阅读题目，发现模型是使用深度学习来检测一段二进制代码中是否存在函数入口，存在的话将入口点标为1，否则为0。而题目需要我们对模型机进行微调，使得模型能够识别出一段不能识别的二进制代码的入口点。说白就是我们需要造一些样本，重新训练模型使得模型能够识别给定样本的函数入口点并保证不是入口点也能识别正确。题目提供了模型的文件和样本�?2个数据�?&lt;/p&gt;
-&lt;p&gt;&amp;emsp;&amp;emsp;接着，我们需要看看模型是使用什么框架生成的，查看模型文件的二进制代码，发现是hdf文件�?&lt;/p&gt;
+&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;前不久自己也思考过能不能将热门的AI技术与CTF比赛结合起来，没想到就意外发现了这道题，感觉非常有趣。&lt;/p&gt;
+&lt;h1 id=&quot;题目解析&quot;&gt;&lt;a href=&quot;#题目解析&quot; class=&quot;headerlink&quot; title=&quot;题目解析&quot;&gt;&lt;/a&gt;题目解析&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;首先，阅读题目，发现模型是使用深度学习来检测一段二进制代码中是否存在函数入口，存在的话将入口点标为1，否则为0。而题目需要我们对模型机进行微调，使得模型能够识别出一段不能识别的二进制代码的入口点。说白就是我们需要造一些样本，重新训练模型使得模型能够识别给定样本的函数入口点并保证不是入口点也能识别正确。题目提供了模型的文件和样本点2个数据。&lt;/p&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;接着，我们需要看看模型是使用什么框架生成的，查看模型文件的二进制代码，发现是hdf文件：&lt;/p&gt;
 &lt;img src=&quot;/2018/07/16/2018看雪·京东AI-CTF大挑战特别题-writeup/1.png&quot;&gt;
     
     </summary>
