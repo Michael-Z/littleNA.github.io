@@ -172,7 +172,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/55.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/56.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/57.png">
-<meta property="og:updated_time" content="2018-07-31T15:07:20.166Z">
+<meta property="og:updated_time" content="2018-07-31T15:47:06.371Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剖析2018腾讯游戏安全竞赛题目（上）">
 <meta name="twitter:description" content="目录 目录 前言 STL逆向分析 Base64逆向分析 AES算法逆向分析 注册机实现  前言&amp;emsp;&amp;emsp;这篇文章的内容详细的分析2018腾讯游戏安全竞赛的赛题，一开始本来只是想跟大家分享一下我是如何逆向分析STL代码的，后面突发奇想要不把整个比赛的题目分析完写出文章，经过三个月的拖延症，终于搞完了资格赛的题目，后面应该还有一篇关于决赛题的分析，所以暂且将这篇命名为（上）。">
@@ -458,7 +458,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-31 23:07:20" itemprop="dateModified" datetime="2018-07-31T23:07:20+08:00">23:07:20</time>
+                <time title="修改时间：2018-07-31 23:47:06" itemprop="dateModified" datetime="2018-07-31T23:47:06+08:00">23:47:06</time>
               
             
           </span>
@@ -909,6 +909,7 @@
 <p>&emsp;&emsp;目前我们逆向完了整个校验的过程，接着考虑如何写注册机。在这之前，把整个校验过程总结如下：</p>
 <img src="/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/57.png">
 <p>&emsp;&emsp;明白了整个校验过程，那么写注册机就比较简单，UserName 流程不变，RegCode通过倒推回去就能计算出来。首先，通过UserName计算出T1-T5，然后通过解方程计算出T6-T8，接着拼接T9（T9为字符串”2018\x00\x00\x00\x00”）输入到AES加密算法中，得到数据最后再进行一次Base64编码，最终的结果就是我们需要的RegCode。详情请看附件中的代码。</p>
+<p><a href="附件.7z">附件下载</a></p>
 <p>(上篇完)</p>
 
       
