@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-31T14:45:06.646Z</updated>
+  <updated>2018-07-31T15:07:20.166Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,17 +21,19 @@
     <link href="http://yoursite.com/2018/07/31/%E5%89%96%E6%9E%902018%E8%85%BE%E8%AE%AF%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E9%A2%98%E7%9B%AE%EF%BC%88%E4%B8%8A%EF%BC%89/"/>
     <id>http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/</id>
     <published>2018-07-31T11:26:35.000Z</published>
-    <updated>2018-07-31T14:45:06.646Z</updated>
+    <updated>2018-07-31T15:07:20.166Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h1 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot;
-        
-      
+      &lt;h1 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;目录&lt;/li&gt;
+&lt;li&gt;前言&lt;/li&gt;
+&lt;li&gt;STL逆向分析&lt;/li&gt;
+&lt;li&gt;Base64逆向分析&lt;/li&gt;
+&lt;li&gt;AES算法逆向分析&lt;/li&gt;
+&lt;li&gt;注册机实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;这篇文章的内容详细的分析2018腾讯游戏安全竞赛的赛题，一开始本来只是想跟大家分享一下我是如何逆向分析STL代码的，后面突发奇想要不把整个比赛的题目分析完写出文章，经过三个月的拖延症，终于搞完了资格赛的题目，后面应该还有一篇关于决赛题的分析，所以暂且将这篇命名为（上）。&lt;/p&gt;
     
     </summary>
     
