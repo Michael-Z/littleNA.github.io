@@ -162,6 +162,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/44.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/45.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/46.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/47.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/48.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/49.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/50.png">
@@ -172,7 +173,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/55.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/56.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/57.png">
-<meta property="og:updated_time" content="2018-07-31T15:47:06.371Z">
+<meta property="og:updated_time" content="2018-08-01T14:44:02.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剖析2018腾讯游戏安全竞赛题目（上）">
 <meta name="twitter:description" content="目录 目录 前言 STL逆向分析 Base64逆向分析 AES算法逆向分析 注册机实现  前言&amp;emsp;&amp;emsp;这篇文章的内容详细的分析2018腾讯游戏安全竞赛的赛题，一开始本来只是想跟大家分享一下我是如何逆向分析STL代码的，后面突发奇想要不把整个比赛的题目分析完写出文章，经过三个月的拖延症，终于搞完了资格赛的题目，后面应该还有一篇关于决赛题的分析，所以暂且将这篇命名为（上）。">
@@ -458,7 +459,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-31 23:47:06" itemprop="dateModified" datetime="2018-07-31T23:47:06+08:00">23:47:06</time>
+                <time title="修改时间：2018-08-01 22:44:02" itemprop="dateModified" datetime="2018-08-01T22:44:02+08:00">2018-08-01</time>
               
             
           </span>
@@ -873,6 +874,7 @@
 <img src="/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/45.png"> 
 <img src="/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/46.png"> 
 <p>&emsp;&emsp;上图变量v257所指向的空间就是计算过程中保存的结果，后面很多层都可以通过动态调试对结果的分析看出来，而不用实际去分析代码。接着进行逆向的SBox变换（iSBox）：</p>
+<img src="/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/47.png"> 
 <img src="/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/48.png"> 
 <p>&emsp;&emsp;接着是逆向的shift_row层（步骤8），这里进行静态分析比较麻烦，直接动态跟踪输入输出的变化就能看出来：</p>
 <img src="/2018/07/31/剖析2018腾讯游戏安全竞赛题目（上）/49.png"> 
