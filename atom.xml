@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-09T14:54:32.492Z</updated>
+  <updated>2018-09-05T02:18:19.079Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>[阅读笔记]《Automatic Problem Generation for Capture-the-Flag Competitions》</title>
+    <link href="http://yoursite.com/2018/09/05/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-%E3%80%8AAutomatic-Problem-Generation-for-Capture-the-Flag-Competitions%E3%80%8B/"/>
+    <id>http://yoursite.com/2018/09/05/阅读笔记-《Automatic-Problem-Generation-for-Capture-the-Flag-Competitions》/</id>
+    <published>2018-09-05T01:45:05.000Z</published>
+    <updated>2018-09-05T02:18:19.079Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;在过去一段时间里，笔者阅读了一些论文，也写了一些阅读笔记，最近想把笔记分享出来，与大家探讨，在鞭策中前行，希望能够坚持下去。原论文&lt;a href=&quot;https://www.usenix.org/system/files/conference/3gse15/3gse15-burket.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;请戳这里&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;最近本人参加了国内最大型的线上CTF竞赛网鼎杯，这是本人第一次严格意义上的参加CTF竞赛，发现大佬云集，不过在队友的辅助下，本人成功解答了3道逆向题，整队分数也进入了前50名（其实是刚好第50名），当然也发现了国内CTF竞赛中共享flag是那么“流行 ”，接着就有了这篇阅读笔记。这是一篇在2015年发表于 USENIX’15(3GSE 15) 关于自动化生成CTF赛题的文章。CTF线上竞赛越来越流行，但是flag共享（py交易）也越来越多，文章主要介绍了自动化问题生成APG（automatic problem generation）技术，并且讨论了如何应用APG去检测flag共享（py交易）和该技术附带的其他好处和挑战，最后文章将APG技术应用于PicoCTF2014竞赛（一个面向高中和大学生的在线CTF竞赛，卡内基梅隆大学和世界顶级的CTF战队PPP共同举办，2014年参数人数超过10000人，一共3000+队伍），发现并捕获到多起flag共享事件，并对比赛数据进行了详细的分析。其中PicoCTF2014整个平台代码在github上开源。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="阅读笔记" scheme="http://yoursite.com/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="ctf" scheme="http://yoursite.com/tags/ctf/"/>
+    
+      <category term="PicoCTF" scheme="http://yoursite.com/tags/PicoCTF/"/>
+    
+      <category term="notebook" scheme="http://yoursite.com/tags/notebook/"/>
+    
+      <category term="APG" scheme="http://yoursite.com/tags/APG/"/>
+    
+  </entry>
   
   <entry>
     <title>剖析2018腾讯游戏安全竞赛题目（上）</title>
@@ -102,9 +131,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
-    
       <category term="luac反编译" scheme="http://yoursite.com/tags/luac%E5%8F%8D%E7%BC%96%E8%AF%91/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
     
       <category term="梦幻西游手游" scheme="http://yoursite.com/tags/%E6%A2%A6%E5%B9%BB%E8%A5%BF%E6%B8%B8%E6%89%8B%E6%B8%B8/"/>
     
@@ -135,9 +164,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
-    
       <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
     
   </entry>
   
@@ -160,9 +189,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
-    
       <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
     
   </entry>
   
@@ -171,7 +200,7 @@
     <link href="http://yoursite.com/2018/07/07/%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86/"/>
     <id>http://yoursite.com/2018/07/07/浅析android手游lua脚本的加密与解密/</id>
     <published>2018-07-07T08:01:12.000Z</published>
-    <updated>2018-07-08T15:56:24.678Z</updated>
+    <updated>2018-07-31T11:33:09.027Z</updated>
     
     <summary type="html">
     
@@ -196,9 +225,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
-    
       <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
     
   </entry>
   
