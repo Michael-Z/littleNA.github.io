@@ -122,6 +122,7 @@ menu:
   categories: /categories/ || th
   tags: /tags/ || tags
   about: /about/ || user
+  links: /links/ || link
   # schedule: /schedule/ || calendar
   # sitemap: /sitemap.xml || sitemap
   # commonweal: /404/ || heartbeat
@@ -184,8 +185,8 @@ social_icons:
 # Blog rolls
 links_icon: link
 links_title: Links
-links_layout: block
-#links_layout: inline
+#links_layout: block
+links_layout: inline
 #links:
   #Title: http://example.com/
 
