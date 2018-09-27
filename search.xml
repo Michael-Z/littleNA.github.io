@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[一个Android短信拦截马样本的分析报告]]></title>
+    <url>%2F2018%2F09%2F27%2F%E4%B8%80%E4%B8%AAAndroid%E7%9F%AD%E4%BF%A1%E6%8B%A6%E6%88%AA%E9%A9%AC%E6%A0%B7%E6%9C%AC%E7%9A%84%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A%2F</url>
+    <content type="text"><![CDATA[&emsp;&emsp;近期有个朋友发来了一个针对俄罗斯的android恶意样本，该恶意apk伪装成一个照片应用，诱导用户点击下载并安装。本文对该恶意apk进行详细的分析。（说实话，这个木马跟我15年分析的第一个短信拦截马的功能差不多，发出来原因有3点：1)样本新且服务器还存活，本报告解密了远控端指令下发的相关流量。2)报告最后尝试利用威胁情报来分析这个黑客组织。3)为后续的文章做铺垫。） 木马简介&emsp;&emsp;木马是典型的android短信拦木马，为了逃逸杀毒引擎的静态扫描，该apk集成了一个内存泄露检测工具LeakCanary来增加良性行为，这个工具在github开源，被广大android开发者所使用，项目的star数达到了2w+。 基本信息 名称：Фoто 包名：com.tie.roar 入口：com.tie.roar.ConventionCommitment 版本信息：Ver：2.102.245(1) SDK：16 TargetSDK：25 MD5: f47d664bba5d751ad4390d75f4f19b0f SHA-1: ec1b835728eb538e272c9c6f8f7c02dcb41c53da 详细行为分析清单信息&emsp;&emsp;从下图可以看到，木马由多个组件组成，各组件负责不同功能，应用权限也声明了几个比较敏感的短信相关的权限。 隐藏自身&emsp;&emsp;木马安装运行后，会隐藏自身的图标，降低自身被发现的概率，达到常驻系统的目的。 &emsp;&emsp;下图是变化过程： 字符串解密 &emsp;&emsp;通过手动分析，发现木马对关键的字符串进行了加密，分析算法，得知是使用了自定义的异或算法加上base64编码： &emsp;&emsp;解密后的字符串： 1234567891011121314a=”android.settings.ACCESSIBILITY_SETTINGS”b=”Для уcтрaннения проблемы Вам нeобходимo включить 'Системноe прилoжениe' 1.Для этогo перейдите нa страницу нaстрoек 2.Выбeрите из cпискa 'Системноe прилoжениe' 3.Включитe егo.”c=”Систeмнaя непoладка”d=”Системноe прилoжениe”g=”http://whyadvhot.com/eqv2pvqgumbobw8n/index.php”h=”command”i=”model”j=”timestamp”k=”ver”l=”waitrun”m=”android.provider.Telephony.SMS_RECEIVED” &emsp;&emsp;变量b是一段俄语，通过google翻译可以知道该段文字是用来诱惑用户给木马打开辅助系统的权限，木马利用辅助系统可以做很多事情，比如模拟物理按键、模拟点击（自动安装应用）、息屏、亮屏幕等操作。 &emsp;&emsp;变量g是木马上线访问的url，通过这个url可以关联分析出这个黑客或者组织在过去10年的一些活动，后面进行分析。 木马上线&emsp;&emsp;木马使用Http进行上线通知，并使用Http协议传输命令进行操控客户端。 &emsp;&emsp;截获的数据包： &emsp;&emsp;解密后： 12&#123;"type":1,"data":&#123;"model":"Android SDK built for x86","ver":"6.3.4","android":"4.1.2","cell":"Android","x":260&#125;,"id":"d3b71c99311712cb"&#125; 指令下达&emsp;&emsp;木马通过回传指令让受控端进行一些敏感的操作，比如拨打电话、定向发送短信、劫持短信内容等。指令如下图所示： &emsp;&emsp;分析表明，7号指令是拨打电话、19号指令是劫持短信并且替换字符、11号指令是定向发送短信。这样的话，木马就能够通过后台扣费、获取银行验证码等手段来获利。部分解密流量如下： 12&#123;"command":0,"params":&#123;"timestamp":1537173808&#125;,"waitrun":0&#125;,&#123;"command":"11","params":&#123;"to":"+79173065404","body":"test number 2412403","timestamp":12281930,"x":0&#125;,"waitrun":1000&#125; 收集用户信息&emsp;&emsp;读取短信、联系人等信息。 监控短信&emsp;&emsp;木马会一直监控用户短信情况，当用户收到的短信时立马将短信内容通过url发送到服务器。下面是组包的代码： &emsp;&emsp;用模拟器测试一下收到短信的情况： &emsp;&emsp;短信发送后截获的木马上传数据到服务器的http包： &emsp;&emsp;解密数据如下： 1&#123;"type":2,"data":&#123;"n":"6505551212","t":"Hello, this is my password: 888888."&#125;,"id":"d3b71c99311712cb"&#125; 保活自身&emsp;&emsp;木马启动服务并使用onServiceConnected()函数来判断app是否在线。 &emsp;&emsp;当运行的服务发现app进程被杀掉的时候，马上启动app，并在前台伪装系统应用显示。 前台伪装&emsp;&emsp;木马伪装成系统应用在前台显示，避免后台运行被系统清理。 &emsp;&emsp;下面是显示的图片： 激活辅助功能&emsp;&emsp;当发现用户打开对木马不利的应用时，木马一直弹窗，逼迫用户跳转到开启辅助功能的界面。这样导致用户没法手动结束掉木马进程。 木马保护&emsp;&emsp;如果木马获得辅助功能，木马会通过模拟点击物理按键返回来阻止用户打开某些程序，这个程序黑名单由40号指令获取。阻止打开程序的相关代码： &emsp;&emsp;解密后的40号指令数据包如下： 12&#123;"command":40,"params":&#123;"text":"clean,.kms.,.drweb,.eset.,.ikarus.,.settings,:interactor,.gms.persistent,.packageinstaller,.cmcm,ahnlab,virus,avira,security,dianxinos,wsandroid,trendmicro,malware,tencent,sophos,mcafee,fsecure,sber,sber,com.android.mms","t":"android:id\/right_button,android:id\/button1,android:id\/restricted_action,android:id\/action_button,com.android.settings:id\/restricted_action,com.android.settings:id\/action_button,да,ок,подтвердить,разрешить,отправить,активировать","timestamp":1537173681,"x":1&#125;,"waitrun":0&#125; &emsp;&emsp;从数据包中可以看到mcafee、kms 、security、clean等一些安全厂商的包名字段，还有系统设置settings的字段。如果用户打开的应用名包含这些字段，木马将模拟物理返回按钮，导致用户打不开这些程序，也就无法手动杀掉木马进程了。 威胁情报分析&emsp;&emsp;木马访问的whyadvhot.com域名指向了IP为185.234.218.60的服务器，该IP在微步在线中被标记为恶意服务器，部分信息的信息如下： &emsp;&emsp;该IP地址在上半年的2018年3月份还发起了一起恶意邮箱攻击的事件。通过使用关联分析，可以发现该木马的作者是具有丰富的黑产经验，从下图可以看出，在服务器上面还存有大量的apk变种木马。 &emsp;&emsp;从数据中还可以查到，该黑客组织最早的活动可以追溯到2009年，一直进行着windows平台的木马传播，捕获的PE样本时间从2014年至2018年之间，说明该黑客组织一直保持着活跃，并从2018年9月开始传播大量的apk木马。从这次捕获到的木马也可以看出，该木马的功能比较局限，实现的手法也相对粗糙，在笔者分析的这段时间里，木马服务器还经常掉线，可能该木马还处于测试阶段，当然，对该组织的后续活动，我们也会一直跟踪下去。 总结&emsp;&emsp;这类木马主要是为了控制用户手机，通过拨打制定电话、发送指定短信，来到达恶意扣费的目的，进而谋取利益。当然，该木马还可以会监控用户短信，当用户正在进行短信验证，验证码将会发送到黑客服务器，进入导致用户账户或者银行财产等被盗。因此，在此建议用户一定不要随意点开的链接并按照应用。最好的方式是在设置中选择不允许从未知来源安装软件，从官方途径安装应用，这样就能避免被此类木马感染。]]></content>
+      <categories>
+        <category>样本分析</category>
+      </categories>
+      <tags>
+        <tag>木马</tag>
+        <tag>Android</tag>
+        <tag>短信拦截</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[[阅读笔记]《Automatic Problem Generation for Capture-the-Flag Competitions》]]></title>
     <url>%2F2018%2F09%2F05%2F%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-%E3%80%8AAutomatic-Problem-Generation-for-Capture-the-Flag-Competitions%E3%80%8B%2F</url>
     <content type="text"><![CDATA[&emsp;&emsp;在过去一段时间里，笔者阅读了一些论文，也写了一些阅读笔记，最近想把笔记分享出来，与大家探讨，在鞭策中前行，希望能够坚持下去。原论文请戳这里 简介&emsp;&emsp;最近本人参加了国内最大型的线上CTF竞赛网鼎杯，这是本人第一次严格意义上的参加CTF竞赛，发现大佬云集，不过在队友的辅助下，本人成功解答了3道逆向题，整队分数也进入了前50名（其实是刚好第50名），当然也发现了国内CTF竞赛中共享flag是那么“流行 ”，接着就有了这篇阅读笔记。这是一篇在2015年发表于 USENIX’15(3GSE 15) 关于自动化生成CTF赛题的文章。CTF线上竞赛越来越流行，但是flag共享（py交易）也越来越多，文章主要介绍了自动化问题生成APG（automatic problem generation）技术，并且讨论了如何应用APG去检测flag共享（py交易）和该技术附带的其他好处和挑战，最后文章将APG技术应用于PicoCTF2014竞赛（一个面向高中和大学生的在线CTF竞赛，卡内基梅隆大学和世界顶级的CTF战队PPP共同举办，2014年参数人数超过10000人，一共3000+队伍），发现并捕获到多起flag共享事件，并对比赛数据进行了详细的分析。其中PicoCTF2014整个平台代码在github上开源。 中文摘要&emsp;&emsp;计算机安全游戏，尤其是夺旗赛（CTF）越来越流行。传统的CTF竞赛是指提供一组黑客挑战游戏给竞赛者，竞赛者在正确的解答题目后会得到一串文字叫做”flag”，提交给计分服务器将得到分数。在传统的CTF架构中，整个竞赛过程的题目和答案都是相同的。 &emsp;&emsp;在这篇文章中，我们讨论了自动问题生成（APG），一种给定的挑战但（题目和答案）不固定，相当于有很多不同的自动生成的题目实例。APG提供给玩家独特的竞赛体验，同时能够在问题的变化中促进有目的的练习，以确保用户可以复制解决方案的想法。APG也能够赋予管理者一种能力–检测用户是否提交了一个从其他队里py交易来的flag（a copied flag）到服务器。在2014年我们举办了一场大型的CTF竞赛叫做PicoCTF，在比赛中我们统计了flag共享的流行程度。我们的结果表明，提交AGP生成题目的flags，大约0.8%是py交易来的，同时14%的队伍至少提交了一个py交易来的flag。在flag共享事件中，68%的队伍最终自己也解决了题目（笔者注：先提交了py来的flag，然后又提交了自己的flag）。 介绍&emsp;&emsp;这一节详细介绍了CTF、APG、PicoCTF等概念，并且说明是如何应用APG技术到PicoCTF赛事中，最后说明了文章的贡献（其中结论比较有意思）： 文章详细描述了APG如何运用到PicoCTF赛事中，细节包括表现性能、可拓展性、题目难度的平衡、APG的选择等。 文章对PicoCTF2014共享flag的事件进行了统计分析，得出一些有意思的结论：不止低分段会py，高分段也存在py交易，并且共享flag的队伍很有可能来自同一学校。 PicoCTF平台在github上开源。 Automatic Problem Generation&emsp;&emsp;陈述陈述，然后举了一个凯撒密码的例子：服务器首先生成唯一的flag，然后附加到原始明文”the secret pass phrase is”后，接着服务器选取n（26个可能）做为密钥对明文进行加密得到密文，将结果派发给需要挑战的队伍（不同队伍会生成不会的flag和密钥）。这个例子是属于模板自动生成问题（ templated autogen problem），也就是一个模子里出来的题目（但是题目不完全相同，答案也不同），能够解决flag共享的作弊问题，但是不能解决解题思路共享的作弊问题，比如该例子虽然各队的flag不一样，但是解题思路都是凯撒密码。模板自动生成问题有2个作用：1)阻止和检测flag coping, 2)找出泄露flag的源。（这里应该很好理解，就是同一道题目，每个队伍的答案都是不一样的flag，这样当提交的是别队解答出来的flag当然就可以检测和阻止啦。泄露溯源的话就是如果同一时间大量的队伍提交同一flag，那么就可以找出这个flag对应的队伍，进而找出flag泄露的原因。文章在下一节举了个例子，当比赛进行到第5天时，突然有一个flag被大量提交，然后举办方发现原来是该flag所属的队伍在YouTube上把flag泄露了，如下图，橙色是不正确的提交，蓝色是正确的提交：） &emsp;&emsp;接着，文章提出了合成自动生成问题（ synthesized autogen problem），是指输入一系列约束条件的组合，然后自动生成题目。能够解决上面的2种作弊问题（共享flag和共享思路），但是生成的题目很难平衡难易，有失公平性。文章制定了一个通用的逆向工程挑战原型（用户必须提供满足不同复杂性约束的输入）、ROP攻击（不同的队伍需利用不同的gadgets和function）、以及隐藏在各种类型图像中的隐写问题。由于这些问题比较复杂，因此很难确保生成的不同实例具有相似的难度。出于这个原因，这些生成的题目没有在PicoCTF2014中使用。不过在未来中，这些题目可能有助于参赛者的练习，帮助其提高安全技能。 &emsp;&emsp;之后，文章讨论了CTF赛事中使用APG题目的一些挑战： 保持一致的难度。主要是说，自动生成的题目实例可能难度不一样，比如PicoCTF2014的一道XOR异或题，由于自动生成的题目是从0-255中取一个字节与明文进行异或加密，那么对于收到异或字节0题目的队伍，他们拿到的密文就是明文（就不用解密操作了，直接提取flag），造成各题难度不一致。 Bug的预防。APG可能产生非预期的bug，这会给比赛带来一些问题。举例了使用python函数strip()会造成非预期的错误，strip函数是取参数的每个单字节，并去除字符串头尾存在的相同字节。比如 strip(““)的本意是去除html标签，但是其实如果头尾存在t、d字符也会被去掉，而每个队伍拿到的flag都是随机生成并且唯一的，那么可能有些队伍的flag头尾存在t、d字符，被去掉后造成服务器判断flag无效。 可扩展性和部署。可扩展性是说可能有很多新的特性，平台需要比较容易扩展。部署是另一个新的挑战，因为每道题每个队伍的flag不同，那么flag的生成可能需要绑定队伍的token。 &emsp;&emsp;最后，文章介绍了APG应用于PicoCTF中，并介绍了部分代码的架构，比如一道APG题目，需要一个 generator和一个 grader，generator主要负责生成题目，grader主要负责判断队伍提交的答案是否正确。 Flag Sharing in PicoCTF 2014：&emsp;&emsp;接下来，作者统计了PicoCTF2014比赛中，flag sharing事件，并进一步对其详细的分析，还对flag泄露事件进行了溯源分析： &emsp;&emsp;文章表示，有71%的flag共享事件都是出现在同一个学校之间，并且不止低分段有flag共享，高分段也会出现flag共享事件。 讨论：&emsp;&emsp;作者发现，很多关于flag共享的因素都是PicoCTF唯一的，如： PicoCTF比赛持续了12天，使得flag不被泄露更具有挑战。 很多参赛队伍都是来自同一个学校，使得flag共享变动更加容易。 更多的参赛人员是新手玩家，相比有经验的人，可能更不清楚flag共享的严重性。 &emsp;&emsp;所以，作者认为造成PicoCTF中flag共享频繁出现并且覆盖面广的原因具有唯一性，其他类似的比赛可能很少出现，有也是集中于个别队伍。（本人不这么认为，你懂得） 结束语&emsp;&emsp;纵观国内的CTF比赛，好像还没有出现一个类似的防作弊技术运用于CTF中，基本都是同一道题同一flag。据我所知，这次网鼎杯比赛中使用了其他手段：1)通过检测pwn题目的流量，来检测是否有队伍进行了作弊，或者答案的泄露；2)同时使用了赛后复查wp的机制来防作弊（不过最后好像没有时间检查wp）。但是这2个方法都具有局限性，比如通过流量只能检测部分pwn的作弊，修改解题的脚本流量就能绕过检测；通过审核wp虽然可以一定程度防止作弊，但是需要大量的人力。攻防是一个持续不断的过程，如何更有效的防止线上CTF的作弊也是值得思考的事情。]]></content>
@@ -50,8 +63,8 @@
       </categories>
       <tags>
         <tag>lua</tag>
-        <tag>luac反编译</tag>
         <tag>手游安全</tag>
+        <tag>luac反编译</tag>
         <tag>梦幻西游手游</tag>
       </tags>
   </entry>
@@ -64,8 +77,8 @@
       </categories>
       <tags>
         <tag>lua</tag>
-        <tag>手游安全</tag>
         <tag>luajit</tag>
+        <tag>手游安全</tag>
       </tags>
   </entry>
   <entry>
@@ -77,8 +90,8 @@
       </categories>
       <tags>
         <tag>lua</tag>
-        <tag>手游安全</tag>
         <tag>luajit</tag>
+        <tag>手游安全</tag>
       </tags>
   </entry>
   <entry>
@@ -90,8 +103,8 @@
       </categories>
       <tags>
         <tag>lua</tag>
-        <tag>手游安全</tag>
         <tag>luajit</tag>
+        <tag>手游安全</tag>
       </tags>
   </entry>
 </search>

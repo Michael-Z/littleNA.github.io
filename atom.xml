@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-05T02:18:19.079Z</updated>
+  <updated>2018-09-27T09:32:58.101Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个Android短信拦截马样本的分析报告</title>
+    <link href="http://yoursite.com/2018/09/27/%E4%B8%80%E4%B8%AAAndroid%E7%9F%AD%E4%BF%A1%E6%8B%A6%E6%88%AA%E9%A9%AC%E6%A0%B7%E6%9C%AC%E7%9A%84%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A/"/>
+    <id>http://yoursite.com/2018/09/27/一个Android短信拦截马样本的分析报告/</id>
+    <published>2018-09-27T08:15:28.000Z</published>
+    <updated>2018-09-27T09:32:58.101Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;近期有个朋友发来了一个针对俄罗斯的android恶意样本，该恶意apk伪装成一个照片应用，诱导用户点击下载并安装。本文对该恶意apk进行详细的分析。（说实话，这个木马跟我15年分析的第一个短信拦截马的功能差不多，发出来原因有3点：1)样本新且服务器还存活，本报告解密了远控端指令下发的相关流量。2)报告最后尝试利用威胁情报来分析这个黑客组织。3)为后续的文章做铺垫。）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;木马简介&quot;&gt;&lt;a href=&quot;#木马简介&quot; class=&quot;headerlink&quot; title=&quot;木马简介&quot;&gt;&lt;/a&gt;木马简介&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;木马是典型的android短信拦木马，为了逃逸杀毒引擎的静态扫描，该apk集成了一个内存泄露检测工具LeakCanary来增加良性行为，这个工具在github开源，被广大android开发者所使用，项目的star数达到了2w+。&lt;/p&gt;
+&lt;h1 id=&quot;基本信息&quot;&gt;&lt;a href=&quot;#基本信息&quot; class=&quot;headerlink&quot; title=&quot;基本信息&quot;&gt;&lt;/a&gt;基本信息&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;名称：Фoто&lt;/li&gt;
+&lt;li&gt;包名：com.tie.roar&lt;/li&gt;
+&lt;li&gt;入口：com.tie.roar.ConventionCommitment&lt;/li&gt;
+&lt;li&gt;版本信息：Ver：2.102.245(1) SDK：16 TargetSDK：25&lt;/li&gt;
+&lt;li&gt;MD5: f47d664bba5d751ad4390d75f4f19b0f&lt;/li&gt;
+&lt;li&gt;SHA-1: ec1b835728eb538e272c9c6f8f7c02dcb41c53da&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="样本分析" scheme="http://yoursite.com/categories/%E6%A0%B7%E6%9C%AC%E5%88%86%E6%9E%90/"/>
+    
+    
+      <category term="木马" scheme="http://yoursite.com/tags/%E6%9C%A8%E9%A9%AC/"/>
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="短信拦截" scheme="http://yoursite.com/tags/%E7%9F%AD%E4%BF%A1%E6%8B%A6%E6%88%AA/"/>
+    
+  </entry>
   
   <entry>
     <title>[阅读笔记]《Automatic Problem Generation for Capture-the-Flag Competitions》</title>
@@ -131,9 +166,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="luac反编译" scheme="http://yoursite.com/tags/luac%E5%8F%8D%E7%BC%96%E8%AF%91/"/>
-    
       <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="luac反编译" scheme="http://yoursite.com/tags/luac%E5%8F%8D%E7%BC%96%E8%AF%91/"/>
     
       <category term="梦幻西游手游" scheme="http://yoursite.com/tags/%E6%A2%A6%E5%B9%BB%E8%A5%BF%E6%B8%B8%E6%89%8B%E6%B8%B8/"/>
     
@@ -164,9 +199,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
-    
       <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -189,9 +224,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
-    
       <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -225,9 +260,9 @@
     
       <category term="lua" scheme="http://yoursite.com/tags/lua/"/>
     
-      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
-    
       <category term="luajit" scheme="http://yoursite.com/tags/luajit/"/>
+    
+      <category term="手游安全" scheme="http://yoursite.com/tags/%E6%89%8B%E6%B8%B8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
