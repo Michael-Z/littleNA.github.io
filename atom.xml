@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-30T03:22:22.587Z</updated>
+  <updated>2018-09-30T03:27:33.443Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,11 +21,11 @@
     <link href="http://yoursite.com/2018/09/30/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-%E3%80%8AAVPASS-Automatically-Bypassing-Android-Malware-Detection-System%E3%80%8B/"/>
     <id>http://yoursite.com/2018/09/30/阅读笔记-《AVPASS-Automatically-Bypassing-Android-Malware-Detection-System》/</id>
     <published>2018-09-30T02:34:47.000Z</published>
-    <updated>2018-09-30T03:22:22.587Z</updated>
+    <updated>2018-09-30T03:27:33.443Z</updated>
     
     <summary type="html">
     
-      &lt;h1 align=&quot;center&quot;&gt;Black Hat 2017 AVPASS系统的研究报告&lt;br&gt;——一个自动化逃逸android恶意软件检测的系统&lt;/h1&gt;
+      &lt;p align=&quot;center&quot; style=&quot;color:black;font-size:26px;&quot;&gt;Black Hat 2017 AVPASS系统的研究报告&lt;br&gt;——一个自动化逃逸android恶意软件检测的系统&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;最近各界对AI模型的安全性和鲁棒性进行了深入的探讨，如何生成和检测对抗样本也慢慢进入大众视野。恶意软件的对抗其实是经久不衰的话题，从PC端的免杀到移动端的逃逸，一直在发展。为此笔者分析了在BlackHat 2017上开源的一个关于android恶意软件检测自动化逃逸的工具AVPASS，本文是结合该工具的&lt;a href=&quot;https://www.blackhat.com/docs/us-17/thursday/us-17-Jung-AVPASS-Leaking-And-Bypassing-Anitvirus-Detection-Model-Automatically.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;演讲PPT&lt;/a&gt;、&lt;a href=&quot;https://www.youtube.com/watch?v=kXf5RI4tcMo&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;演讲视频&lt;/a&gt;和&lt;a href=&quot;https://github.com/sslab-gatech/avpass&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;del&gt;开源代码&lt;/del&gt;&lt;/a&gt;的研究报告。&lt;/p&gt;
