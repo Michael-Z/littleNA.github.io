@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-27T09:32:58.101Z</updated>
+  <updated>2018-09-30T03:22:22.587Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>[阅读笔记]《AVPASS: Automatically Bypassing Android Malware Detection System》</title>
+    <link href="http://yoursite.com/2018/09/30/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-%E3%80%8AAVPASS-Automatically-Bypassing-Android-Malware-Detection-System%E3%80%8B/"/>
+    <id>http://yoursite.com/2018/09/30/阅读笔记-《AVPASS-Automatically-Bypassing-Android-Malware-Detection-System》/</id>
+    <published>2018-09-30T02:34:47.000Z</published>
+    <updated>2018-09-30T03:22:22.587Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 align=&quot;center&quot;&gt;Black Hat 2017 AVPASS系统的研究报告&lt;br&gt;——一个自动化逃逸android恶意软件检测的系统&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;最近各界对AI模型的安全性和鲁棒性进行了深入的探讨，如何生成和检测对抗样本也慢慢进入大众视野。恶意软件的对抗其实是经久不衰的话题，从PC端的免杀到移动端的逃逸，一直在发展。为此笔者分析了在BlackHat 2017上开源的一个关于android恶意软件检测自动化逃逸的工具AVPASS，本文是结合该工具的&lt;a href=&quot;https://www.blackhat.com/docs/us-17/thursday/us-17-Jung-AVPASS-Leaking-And-Bypassing-Anitvirus-Detection-Model-Automatically.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;演讲PPT&lt;/a&gt;、&lt;a href=&quot;https://www.youtube.com/watch?v=kXf5RI4tcMo&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;演讲视频&lt;/a&gt;和&lt;a href=&quot;https://github.com/sslab-gatech/avpass&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;del&gt;开源代码&lt;/del&gt;&lt;/a&gt;的研究报告。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;&amp;emsp;&amp;emsp;该议题是发表于BlackHat2017会议的一篇关于android对抗性样本自动生成的议题，主要使用了混淆的方法来逃逸静态方法的检测。目标是 1）自动化推断反病毒引擎检测移动恶意软件的特征，2）最小程度的混淆恶意样本的这些特征以逃过检测。议题中首先讲解了什么混淆，并且混淆是如何阻止逆向人员分析的。接着讲述了4个学术界检测apk的知名方法：基于API、基于数据流、基于组件、基于签名，并且讲述如何逃逸这些检测引擎。最后议题将工具运用到现实中，以VirusTotal上的检测引擎作为目标，自动推断出反病毒厂家常用的检测特征，并且逃逸这些引擎。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="阅读笔记" scheme="http://yoursite.com/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="android malware" scheme="http://yoursite.com/tags/android-malware/"/>
+    
+      <category term="对抗样本" scheme="http://yoursite.com/tags/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC/"/>
+    
+      <category term="逃逸" scheme="http://yoursite.com/tags/%E9%80%83%E9%80%B8/"/>
+    
+      <category term="notebook" scheme="http://yoursite.com/tags/notebook/"/>
+    
+  </entry>
   
   <entry>
     <title>一个Android短信拦截马样本的分析报告</title>
@@ -72,9 +103,9 @@
     
       <category term="ctf" scheme="http://yoursite.com/tags/ctf/"/>
     
-      <category term="PicoCTF" scheme="http://yoursite.com/tags/PicoCTF/"/>
-    
       <category term="notebook" scheme="http://yoursite.com/tags/notebook/"/>
+    
+      <category term="PicoCTF" scheme="http://yoursite.com/tags/PicoCTF/"/>
     
       <category term="APG" scheme="http://yoursite.com/tags/APG/"/>
     
